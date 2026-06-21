@@ -1,20 +1,16 @@
-import "genix-ui/styles.css";
-import { ProfileCard } from "genix-ui";
+import { BackgroundImageSlider } from "genix-ui";
 
-function App() {
+const App = () => {
   return (
-    <div style={{ padding: "40px" }}>
-      <ProfileCard
-        name="Sakshi Chaturvedi"
-        role="Full Stack Developer"
-        location="India"
-        bio="Building modern web apps and animated UI components."
-        avatar="https://images.unsplash.com/photo-1494790108377-be9c29b29330"
-        variant="elevated"
-        onButtonClick={() => alert("Profile clicked")}
+    <div>
+      <BackgroundImageSlider
+        height="600px"
+        radius="24px"
+        autoPlay={true}
+        autoPlayInterval={3000}
       />
     </div>
   );
-}
+};
 
 export default App;

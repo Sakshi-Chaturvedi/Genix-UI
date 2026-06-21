@@ -1,170 +1,131 @@
-import React from "react";
-import "./Card.css";
-
-type CardVariant = "default" | "elevated" | "outlined" | "glass";
-type CardPadding = "small" | "medium" | "large";
+import React, { useState } from "react";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode;
   title?: string;
   description?: string;
-  variant?: CardVariant;
-  padding?: CardPadding;
-  fullWidth?: boolean;
-  hoverable?: boolean;
+  icon?: React.ReactNode;
+  tag?: string;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-interface CardSubComponentProps extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode;
-}
+export const Card = ({
+  title = "Performance",
+  description = "Real-time metrics with live dashboard updates every second.",
+  icon = "⚡",
+  tag = "Active",
+  onClick,
+  style,
+  ...rest
+}: CardProps) => {
+  const [hovered, setHovered] = useState<boolean>(false);
 
-interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  children?: React.ReactNode;
-}
-
-interface CardDescriptionProps
-  extends React.HTMLAttributes<HTMLParagraphElement> {
-  children?: React.ReactNode;
-}
-
-const CardRoot = React.forwardRef<HTMLDivElement, CardProps>(
-  (
-    {
-      children,
-      title,
-      description,
-      variant = "default",
-      padding = "medium",
-      fullWidth = false,
-      hoverable = true,
-      className = "",
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <div
-        ref={ref}
-        className={`
-          genix-card
-          genix-card-${variant}
-          genix-card-padding-${padding}
-          ${fullWidth ? "genix-card-full" : ""}
-          ${hoverable ? "genix-card-hoverable" : ""}
-          ${className}
-        `}
-        {...props}
-      >
-        {(title || description) && (
-          <div className="genix-card-header">
-            {title && <h3 className="genix-card-title">{title}</h3>}
-            {description && (
-              <p className="genix-card-description">{description}</p>
-            )}
-          </div>
-        )}
-
-        {children}
-      </div>
-    );
-  }
-);
-
-CardRoot.displayName = "Card";
-
-const CardHeader = React.forwardRef<HTMLDivElement, CardSubComponentProps>(
-  ({ children, className = "", ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={`genix-card-header ${className}`}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-
-CardHeader.displayName = "Card.Header";
-
-const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
-  ({ children, className = "", ...props }, ref) => {
-    return (
-      <h3
-        ref={ref}
-        className={`genix-card-title ${className}`}
-        {...props}
-      >
-        {children}
-      </h3>
-    );
-  }
-);
-
-CardTitle.displayName = "Card.Title";
-
-const CardDescription = React.forwardRef<
-  HTMLParagraphElement,
-  CardDescriptionProps
->(({ children, className = "", ...props }, ref) => {
   return (
-    <p
-      ref={ref}
-      className={`genix-card-description ${className}`}
-      {...props}
+    <div
+      {...rest}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      style={{
+        background: "#ffffff",
+        border: `0.5px solid ${hovered ? "#00000033" : "#0000001a"}`,
+        borderRadius: "12px",
+        padding: "1.25rem",
+        transition: "border-color 0.2s, transform 0.2s",
+        transform: hovered ? "translateY(-2px)" : "translateY(0)",
+        cursor: onClick ? "pointer" : "default",
+        position: "relative",
+        overflow: "hidden",
+        fontFamily: "sans-serif",
+        width: "260px",
+        ...style,
+      }}
     >
-      {children}
-    </p>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: "3px",
+          background: "#1D9E75",
+          borderRadius: "12px 12px 0 0",
+        }}
+      />
+
+      <div
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 8,
+          background: "#E1F5EE",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 18,
+          marginBottom: 14,
+        }}
+      >
+        {icon}
+      </div>
+
+      <p
+        style={{
+          fontSize: 15,
+          fontWeight: 700,
+          color: "#111",
+          margin: "0 0 6px",
+        }}
+      >
+        {title}
+      </p>
+
+      <p
+        style={{
+          fontSize: 13,
+          color: "#666",
+          lineHeight: 1.6,
+          margin: "0 0 16px",
+        }}
+      >
+        {description}
+      </p>
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderTop: "0.5px solid #0000001a",
+          paddingTop: 12,
+        }}
+      >
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 500,
+            padding: "3px 9px",
+            borderRadius: 20,
+            background: "#E1F5EE",
+            color: "#0F6E56",
+          }}
+        >
+          {tag}
+        </span>
+
+        <span
+          style={{
+            fontSize: 14,
+            color: "#999",
+            display: "inline-block",
+            transition: "transform 0.2s",
+            transform: hovered ? "translateX(3px)" : "translateX(0)",
+          }}
+        >
+          →
+        </span>
+      </div>
+    </div>
   );
-});
-
-CardDescription.displayName = "Card.Description";
-
-const CardContent = React.forwardRef<HTMLDivElement, CardSubComponentProps>(
-  ({ children, className = "", ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={`genix-card-content ${className}`}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-
-CardContent.displayName = "Card.Content";
-
-const CardFooter = React.forwardRef<HTMLDivElement, CardSubComponentProps>(
-  ({ children, className = "", ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={`genix-card-footer ${className}`}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-
-CardFooter.displayName = "Card.Footer";
-
-export const Card = Object.assign(CardRoot, {
-  Header: CardHeader,
-  Title: CardTitle,
-  Description: CardDescription,
-  Content: CardContent,
-  Footer: CardFooter,
-});
-
-export type {
-  CardVariant,
-  CardPadding,
-  CardSubComponentProps,
-  CardTitleProps,
-  CardDescriptionProps,
 };

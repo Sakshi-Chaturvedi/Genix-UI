@@ -1,13 +1,18 @@
-import { BackgroundImageSlider } from "genix-ui";
+import { AvatarCard } from "genix-ui";
 
 const App = () => {
   return (
     <div>
-      <BackgroundImageSlider
-        height="600px"
-        radius="24px"
-        autoPlay={true}
-        autoPlayInterval={3000}
+      <AvatarCard
+        name="Sakshi Chaturvedi"
+        role="Full Stack Developer"
+        followers={5200}
+        following={245}
+        projects={18}
+        bio="Creating clean, animated and reusable UI components."
+        accent="#ec4899"
+        bg="#09090b"
+        radius="28px"
       />
     </div>
   );

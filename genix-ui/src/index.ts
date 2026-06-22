@@ -25,3 +25,8 @@ export type {
 // ! Animated-Button Component
 export { AnimatedButton } from "./components/AnimatedButton";
 export type { AnimatedButtonProps } from "./components/AnimatedButton";
+
+
+// ! Charts Component
+export { Charts } from "./components/Charts";
+export type { ChartsProps, ChartDataItem, ChartType } from "./components/Charts";

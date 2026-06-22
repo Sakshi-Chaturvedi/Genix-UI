@@ -1,29 +1,19 @@
-import { AnimatedButton } from "genix-ui";
-import "remixicon/fonts/remixicon.css";
+import { Charts } from "genix-ui";
 
-export default function App() {
+function App() {
   return (
-    <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
-      <AnimatedButton>Get Started</AnimatedButton>
-
-      <AnimatedButton variant="gradient" size="lg">
-        Launch App
-      </AnimatedButton>
-
-      <AnimatedButton variant="danger" loading>
-        Deleting
-      </AnimatedButton>
-
-      <AnimatedButton leftIcon={<i className="ri-rocket-line" />}>
-        Deploy
-      </AnimatedButton>
-
-      <AnimatedButton
-        variant="outline"
-        rightIcon={<i className="ri-arrow-right-line" />}
-      >
-        Continue
-      </AnimatedButton>
-    </div>
+    <Charts
+      type="line"
+      title="Revenue"
+      accent="#6366f1"
+      data={[
+        { label: "Jan", value: 40 },
+        { label: "Feb", value: 70 },
+        { label: "Mar", value: 55 },
+        { label: "Apr", value: 90 },
+      ]}
+    />
   );
 }
+
+export default App;

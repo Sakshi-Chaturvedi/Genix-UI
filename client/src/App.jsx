@@ -1,25 +1,29 @@
-import { AnimatedForm } from "genix-ui";
+import { AnimatedButton } from "genix-ui";
+import "remixicon/fonts/remixicon.css";
 
-const App = () => {
+export default function App() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "grid",
-        placeItems: "center",
-        background: "#f8fafc",
-        padding: "24px",
-      }}
-    >
-      <AnimatedForm
-        title="Let’s Talk"
-        description="Have an idea? Send a message and let's build something."
-        submitText="Submit"
-        accent="#111827"
-        onSubmit={(values) => console.log(values)}
-      />
+    <div style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
+      <AnimatedButton>Get Started</AnimatedButton>
+
+      <AnimatedButton variant="gradient" size="lg">
+        Launch App
+      </AnimatedButton>
+
+      <AnimatedButton variant="danger" loading>
+        Deleting
+      </AnimatedButton>
+
+      <AnimatedButton leftIcon={<i className="ri-rocket-line" />}>
+        Deploy
+      </AnimatedButton>
+
+      <AnimatedButton
+        variant="outline"
+        rightIcon={<i className="ri-arrow-right-line" />}
+      >
+        Continue
+      </AnimatedButton>
     </div>
   );
-};
-
-export default App;
+}

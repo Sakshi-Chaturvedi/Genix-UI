@@ -20,3 +20,8 @@ export type {
   AnimatedFormProps,
   AnimatedFormValues,
 } from "./components/AnimatedForm";
+
+
+// ! Animated-Button Component
+export { AnimatedButton } from "./components/AnimatedButton";
+export type { AnimatedButtonProps } from "./components/AnimatedButton";

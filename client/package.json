@@ -12,7 +12,8 @@
   "dependencies": {
     "genix-ui": "file:../genix-ui",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "remixicon": "^4.9.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -13,3 +13,10 @@ export type { BackgroundImageSliderProps } from "./components/Image-Slider";
 // ! Avatar-Card Component
 export { AvatarCard } from "./components/Avatar-Card";
 export type { AvatarCardProps } from "./components/Avatar-Card";
+
+// ! Animated-Form Component
+export { AnimatedForm } from "./components/AnimatedForm";
+export type {
+  AnimatedFormProps,
+  AnimatedFormValues,
+} from "./components/AnimatedForm";

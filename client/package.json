@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "genix-ui": "file:../genix-ui",
+    "genix-ui": "^1.0.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "remixicon": "^4.9.1"

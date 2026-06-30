@@ -2,10 +2,12 @@ import http from "http";
 import app from "./app.js";
 import env from "./config/env.js";
 import logger from "./utils/logger.js";
+import connectDB from "./config/db.js";
 
 const server = http.createServer(app);
 
-const startServer = () => {
+const startServer = async () => {
+  await connectDB();
   server.listen(env.PORT, () => {
     logger.info(`🚀 Server running in ${env.NODE_ENV} mode on port ${env.PORT}`);
   });

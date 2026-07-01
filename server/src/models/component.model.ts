@@ -5,10 +5,10 @@ export interface IComponent {
   projectId?: Types.ObjectId;
   name: string;
   componentType: string;
-  prompt: string;
+  prompt?: string;
   tsxCode: string;
-  cssCode: string;
-  usageExample: string;
+  cssCode?: string;
+  usageExample?: string;
   isSaved: boolean;
   tags: string[];
 }
@@ -41,7 +41,6 @@ const componentSchema = new Schema<IComponentDocument>(
     },
     prompt: {
       type: String,
-      required: true,
     },
     tsxCode: {
       type: String,
@@ -49,11 +48,9 @@ const componentSchema = new Schema<IComponentDocument>(
     },
     cssCode: {
       type: String,
-      required: true,
     },
     usageExample: {
       type: String,
-      required: true,
     },
     isSaved: {
       type: Boolean,
@@ -70,3 +67,4 @@ const componentSchema = new Schema<IComponentDocument>(
 );
 
 export const Component = model<IComponentDocument>("Component", componentSchema);
+

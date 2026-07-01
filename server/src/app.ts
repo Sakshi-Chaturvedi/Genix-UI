@@ -7,6 +7,7 @@ import sendResponse from "./utils/sendResponse.js";
 import globalErrorHandler from "./middlewares/error.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
 import projectRoutes from "./routes/project.routes.js";
+import componentRoutes from "./routes/component.routes.js";
 
 const app = express();
 
@@ -40,6 +41,9 @@ app.use("/api/auth", authRoutes);
 
 // Project endpoints
 app.use("/api/projects", projectRoutes);
+
+// Component endpoints
+app.use("/api/components", componentRoutes);
 
 // Fallback for undefined routes
 app.use((req, res, next) => {

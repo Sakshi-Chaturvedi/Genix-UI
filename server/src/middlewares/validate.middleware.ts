@@ -26,6 +26,8 @@ export const validate = (schema: AnyZodObject) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
+        console.error("ZOD VALIDATION ERROR:", JSON.stringify(error.format(), null, 2));
+        console.error("REQUEST BODY:", req.body);
         const errorMessages = error.errors
           .map((err) => err.message)
           .join(", ");

@@ -2,14 +2,25 @@ import { Schema, model, Document, Types } from "mongoose";
 
 export interface IPromptHistory {
   userId: Types.ObjectId;
+  projectId?: Types.ObjectId;
+  componentId?: Types.ObjectId;
   prompt: string;
-  actionType: "generate-component" | "convert-js-to-ts" | "improve-design" | "explain-code" | "generate-theme";
-  status: "success" | "failed";
-  errorMessage?: string;
-  tokensUsed?: number;
+  feature:
+    | "generate-component"
+    | "improve-component"
+    | "convert-js-ts"
+    | "explain-component"
+    | "generate-page"
+    | "fix-component";
+  model?: string;
+  status: "pending" | "success" | "failed";
+  response?: any;
+  generatedFiles?: string[];
+  tokens?: number;
+  executionTime?: number;
 }
 
-export interface IPromptHistoryDocument extends IPromptHistory, Document {
+export interface IPromptHistoryDocument extends Omit<Document, "model">, IPromptHistory {
   createdAt: Date;
   updatedAt: Date;
 }
@@ -19,26 +30,61 @@ const promptHistorySchema = new Schema<IPromptHistoryDocument>(
     userId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: [true, "User ID is required"],
+    },
+    projectId: {
+      type: Schema.Types.ObjectId,
+      ref: "Project",
+    },
+    componentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Component",
     },
     prompt: {
       type: String,
-      required: true,
+      required: [true, "Prompt is required"],
+      maxlength: [5000, "Prompt must not exceed 5000 characters"],
+      trim: true,
     },
-    actionType: {
+    feature: {
       type: String,
-      enum: ["generate-component", "convert-js-to-ts", "improve-design", "explain-code", "generate-theme"],
-      required: true,
+      required: [true, "Feature is required"],
+      enum: {
+        values: [
+          "generate-component",
+          "improve-component",
+          "convert-js-ts",
+          "explain-component",
+          "generate-page",
+          "fix-component",
+        ],
+        message: "Invalid feature type",
+      },
+    },
+    model: {
+      type: String,
+      trim: true,
     },
     status: {
       type: String,
-      enum: ["success", "failed"],
-      required: true,
+      required: [true, "Status is required"],
+      enum: {
+        values: ["pending", "success", "failed"],
+        message: "Invalid status type",
+      },
     },
-    errorMessage: {
-      type: String,
+    response: {
+      type: Schema.Types.Mixed,
     },
-    tokensUsed: {
+    generatedFiles: {
+      type: [String],
+      default: [],
+    },
+    tokens: {
+      type: Number,
+      default: 0,
+    },
+    executionTime: {
       type: Number,
     },
   },
@@ -47,4 +93,7 @@ const promptHistorySchema = new Schema<IPromptHistoryDocument>(
   }
 );
 
-export const PromptHistory = model<IPromptHistoryDocument>("PromptHistory", promptHistorySchema);
+export const PromptHistory = model<IPromptHistoryDocument>(
+  "PromptHistory",
+  promptHistorySchema
+);

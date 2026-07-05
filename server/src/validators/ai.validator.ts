@@ -22,6 +22,8 @@ export const generateComponentSchema = z.object({
       .max(5000, "Prompt must not exceed 5000 characters"),
     projectId: objectIdSchema.optional(),
     options: generationOptionsSchema.optional(),
+  }, {
+    required_error: "Request body is required",
   }),
 });
 
@@ -40,6 +42,8 @@ export const convertComponentSchema = z.object({
     }),
     projectId: objectIdSchema.optional(),
     options: generationOptionsSchema.optional(),
+  }, {
+    required_error: "Request body is required",
   }),
 });
 
@@ -59,6 +63,8 @@ export const improveComponentSchema = z.object({
       .max(5000, "Instructions must not exceed 5000 characters"),
     projectId: objectIdSchema.optional(),
     options: generationOptionsSchema.optional(),
+  }, {
+    required_error: "Request body is required",
   }),
 });
 
@@ -71,6 +77,8 @@ export const explainComponentSchema = z.object({
       .min(1, "Code cannot be empty"),
     projectId: objectIdSchema.optional(),
     options: generationOptionsSchema.optional(),
+  }, {
+    required_error: "Request body is required",
   }),
 });
 
@@ -85,5 +93,7 @@ export const generatePageSchema = z.object({
       .max(5000, "Prompt must not exceed 5000 characters"),
     projectId: objectIdSchema.optional(),
     options: generationOptionsSchema.optional(),
+  }, {
+    required_error: "Request body is required",
   }),
 });

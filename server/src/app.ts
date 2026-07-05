@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import componentRoutes from "./routes/component.routes.js";
 import historyRoutes from "./routes/history.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
 
 const app = express();
 
@@ -48,6 +49,9 @@ app.use("/api/components", componentRoutes);
 
 // Prompt history endpoints
 app.use("/api/history", historyRoutes);
+
+// AI endpoints
+app.use("/api/ai", aiRoutes);
 
 // Fallback for undefined routes
 app.use((req, res, next) => {

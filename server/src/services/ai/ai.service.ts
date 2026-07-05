@@ -1,4 +1,5 @@
 import { IAIProvider } from "./providers/ai.provider.js";
+import { GeminiProvider } from "./providers/gemini.provider.js";
 import { IAIRequest, IAIResponse } from "../../types/ai.types.js";
 import AppError from "../../utils/errorHandler.js";
 
@@ -61,3 +62,6 @@ export class AIProviderFactory {
     return provider;
   }
 }
+
+// Automatically register default providers
+AIProviderFactory.registerProvider("gemini", new GeminiProvider());

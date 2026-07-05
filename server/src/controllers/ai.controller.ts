@@ -1,20 +1,34 @@
 import { Request, Response } from "express";
 import catchAsync from "../utils/catchAsync.js";
 import sendResponse from "../utils/sendResponse.js";
+import { AIService, AIProviderFactory } from "../services/ai/ai.service.js";
+import aiConfig from "../config/ai.config.js";
 
 /**
  * POST /api/ai/generate
- * Generates a component from a text prompt.
+ * Generates a component from a text prompt (Testing Endpoint).
  */
 export const generateComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
+    const providerName = aiConfig.defaultProvider;
+    const provider = AIProviderFactory.getProvider(providerName);
+    const aiService = new AIService(provider);
+
+    const generationResult = await aiService.generateComponent({
+      prompt: req.body.prompt,
+      options: req.body.options,
+    });
+
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: "Component generation foundation triggered successfully",
+      message: "Component generated successfully",
       data: {
-        files: [],
-        explanation: "Foundation response payload placeholder",
+        provider: generationResult.metadata?.provider,
+        model: generationResult.metadata?.model,
+        files: generationResult.files,
+        explanation: generationResult.explanation,
+        metadata: generationResult.metadata,
       },
     });
   }

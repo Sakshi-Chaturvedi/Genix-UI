@@ -6,7 +6,7 @@ import aiConfig from "../config/ai.config.js";
 
 /**
  * POST /api/ai/generate
- * Generates a component from a text prompt (Testing Endpoint).
+ * Generates a component from a text prompt.
  */
 export const generateComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
@@ -40,13 +40,27 @@ export const generateComponent = catchAsync(
  */
 export const convertComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
+    const providerName = aiConfig.defaultProvider;
+    const provider = AIProviderFactory.getProvider(providerName);
+    const aiService = new AIService(provider);
+
+    const conversionResult = await aiService.convertJsToTs({
+      code: req.body.code,
+      sourceLanguage: req.body.sourceLanguage,
+      targetLanguage: req.body.targetLanguage,
+      options: req.body.options,
+    });
+
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: "JavaScript to TypeScript conversion foundation triggered successfully",
+      message: "Component converted successfully",
       data: {
-        files: [],
-        explanation: "Foundation response payload placeholder",
+        provider: conversionResult.metadata?.provider,
+        model: conversionResult.metadata?.model,
+        files: conversionResult.files,
+        explanation: conversionResult.explanation,
+        metadata: conversionResult.metadata,
       },
     });
   }
@@ -58,13 +72,26 @@ export const convertComponent = catchAsync(
  */
 export const improveComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
+    const providerName = aiConfig.defaultProvider;
+    const provider = AIProviderFactory.getProvider(providerName);
+    const aiService = new AIService(provider);
+
+    const improvementResult = await aiService.improveComponent({
+      code: req.body.code,
+      prompt: req.body.prompt,
+      options: req.body.options,
+    });
+
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: "Component improvement foundation triggered successfully",
+      message: "Component improved successfully",
       data: {
-        files: [],
-        explanation: "Foundation response payload placeholder",
+        provider: improvementResult.metadata?.provider,
+        model: improvementResult.metadata?.model,
+        files: improvementResult.files,
+        explanation: improvementResult.explanation,
+        metadata: improvementResult.metadata,
       },
     });
   }
@@ -76,13 +103,25 @@ export const improveComponent = catchAsync(
  */
 export const explainComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
+    const providerName = aiConfig.defaultProvider;
+    const provider = AIProviderFactory.getProvider(providerName);
+    const aiService = new AIService(provider);
+
+    const explanationResult = await aiService.explainComponent({
+      code: req.body.code,
+      options: req.body.options,
+    });
+
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: "Component explanation foundation triggered successfully",
+      message: "Component explained successfully",
       data: {
-        files: [],
-        explanation: "Foundation response payload placeholder",
+        provider: explanationResult.metadata?.provider,
+        model: explanationResult.metadata?.model,
+        files: explanationResult.files,
+        explanation: explanationResult.explanation,
+        metadata: explanationResult.metadata,
       },
     });
   }
@@ -94,13 +133,25 @@ export const explainComponent = catchAsync(
  */
 export const generatePage = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
+    const providerName = aiConfig.defaultProvider;
+    const provider = AIProviderFactory.getProvider(providerName);
+    const aiService = new AIService(provider);
+
+    const generationResult = await aiService.generatePage({
+      prompt: req.body.prompt,
+      options: req.body.options,
+    });
+
     sendResponse(res, {
       statusCode: 200,
       success: true,
-      message: "Page generation foundation triggered successfully",
+      message: "Page generated successfully",
       data: {
-        files: [],
-        explanation: "Foundation response payload placeholder",
+        provider: generationResult.metadata?.provider,
+        model: generationResult.metadata?.model,
+        files: generationResult.files,
+        explanation: generationResult.explanation,
+        metadata: generationResult.metadata,
       },
     });
   }

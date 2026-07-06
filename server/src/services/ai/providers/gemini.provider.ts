@@ -1,6 +1,8 @@
 import { GoogleGenAI } from "@google/genai";
 import { IAIProvider } from "./ai.provider.js";
 import { IAIRequest, IAIResponse } from "../../../types/ai.types.js";
+import { RESPONSE_SCHEMA } from "../prompts/system.prompt.js";
+import { ResponseParser } from "../parsers/response.parser.js";
 import aiConfig from "../../../config/ai.config.js";
 import AppError from "../../../utils/errorHandler.js";
 import logger from "../../../utils/logger.js";
@@ -21,52 +23,15 @@ export class GeminiProvider implements IAIProvider {
     const timeoutMs = request.options?.timeout ?? aiConfig.timeoutMs;
     const maxRetries = request.options?.retries ?? aiConfig.maxRetries;
 
-    const systemInstruction = `You are a professional React and TypeScript senior frontend engineer.
-Generate clean, production-ready React UI component source files based on the user request.
-
-Strict rules:
-1. Use React and TypeScript only.
-2. Use named exports instead of default exports (e.g., export const MyComponent = ...).
-3. Enforce strict TypeScript types. Do NOT use "any". Ensure all components are fully typed.
-4. CSS styling: Use either Vanilla CSS or CSS Modules (e.g., .css files). Do NOT use Tailwind CSS.
-5. No explanations or markdown outside the files: Return ONLY the structured JSON containing files. Do not write any markdown code blocks, conversational introductions, or summaries outside the JSON schema.
-6. Accessible (a11y): Implement modern accessibility standards (proper semantic HTML, ARIA attributes where needed).
-7. Clean folder structure: Define paths cleanly (e.g., "/src/components/MyComponent.tsx", "/src/components/MyComponent.css").
-8. Production-ready code: Do not include placeholder codes, mock omissions, or "TODO" comments.
-
-Provide the component files in the format of the specified JSON Schema.`;
-
-    const userPrompt = request.prompt;
-    const responseSchema = {
-      type: "object",
-      properties: {
-        files: {
-          type: "array",
-          items: {
-            type: "object",
-            properties: {
-              path: { type: "string" },
-              content: { type: "string" },
-              type: {
-                type: "string",
-                enum: ["code", "style", "test", "storybook", "documentation", "config"]
-              },
-              language: { type: "string" }
-            },
-            required: ["path", "content", "type", "language"]
-          }
-        },
-        explanation: { type: "string" }
-      },
-      required: ["files"]
-    };
+    const systemInstruction = request.systemInstruction;
+    const userPrompt = request.prompt || "";
 
     const apiConfig = {
       systemInstruction,
       temperature,
       maxOutputTokens,
       responseMimeType: "application/json",
-      responseSchema,
+      responseSchema: RESPONSE_SCHEMA,
     };
 
     const startTime = performance.now();
@@ -139,44 +104,8 @@ Provide the component files in the format of the specified JSON Schema.`;
       throw new AppError(`Gemini Generation failed: ${errMsg}`, 502);
     }
 
-    let parsedData: any;
-    try {
-      parsedData = JSON.parse(responseText);
-    } catch (e: any) {
-      logger.error("Failed to parse Gemini response text as JSON", e, { responseText });
-      throw new AppError("AI provider response format is not valid JSON", 502);
-    }
-
-    if (!parsedData || typeof parsedData !== "object") {
-      throw new AppError("AI provider response must be a JSON object", 502);
-    }
-
-    if (!Array.isArray(parsedData.files)) {
-      throw new AppError("AI provider response missing 'files' array", 502);
-    }
-
-    const validatedFiles = parsedData.files.map((file: any, index: number) => {
-      if (!file.path || typeof file.path !== "string") {
-        throw new AppError(`Invalid file structure at index ${index}: 'path' is required and must be a string`, 502);
-      }
-      if (typeof file.content !== "string") {
-        throw new AppError(`Invalid file structure at index ${index}: 'content' must be a string`, 502);
-      }
-      if (!file.type || !["code", "style", "test", "storybook", "documentation", "config"].includes(file.type)) {
-        throw new AppError(`Invalid file structure at index ${index}: 'type' is invalid`, 502);
-      }
-      if (!file.language || typeof file.language !== "string") {
-        throw new AppError(`Invalid file structure at index ${index}: 'language' must be a string`, 502);
-      }
-      return {
-        path: file.path,
-        content: file.content,
-        type: file.type,
-        language: file.language,
-      };
-    });
-
-    const explanation = typeof parsedData.explanation === "string" ? parsedData.explanation : undefined;
+    // Delegate parsing and validation to ResponseParser
+    const parsedData = ResponseParser.parse(responseText);
 
     logger.info("Gemini Provider execution completed successfully", {
       provider: this.id,
@@ -187,8 +116,8 @@ Provide the component files in the format of the specified JSON Schema.`;
 
     return {
       success: true,
-      files: validatedFiles,
-      explanation,
+      files: parsedData.files,
+      explanation: parsedData.explanation,
       metadata: {
         latencyMs,
         model,

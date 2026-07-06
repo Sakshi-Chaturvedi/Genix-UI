@@ -17,10 +17,14 @@ export interface IGenerationMetadata {
   latencyMs?: number;
   model?: string;
   provider?: string;
+  promptVersion?: string;
 }
 
 export interface IAIRequest {
-  prompt: string;
+  prompt?: string;
+  code?: string;
+  sourceLanguage?: string;
+  targetLanguage?: string;
   systemInstruction?: string;
   options?: IGenerationOptions;
   feature?: "generate" | "convert" | "improve" | "explain" | "page";

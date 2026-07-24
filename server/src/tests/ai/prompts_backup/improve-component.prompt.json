@@ -1,0 +1,11 @@
+{
+  "id": "improve-component",
+  "name": "Improve Existing Component",
+  "feature": "improve",
+  "endpoint": "/api/ai/improve",
+  "body": {
+    "code": "import React from 'react';\nimport styles from './Badge.module.css';\n\nexport const Badge = ({ text, color }) => {\n  return (\n    <span style={{ backgroundColor: color, padding: '2px 8px', borderRadius: '4px', fontSize: '12px' }}>\n      {text}\n    </span>\n  );\n};\n",
+    "prompt": "Improve this Badge component: add proper TypeScript interfaces, replace inline styles with CSS Modules, add size variants (sm, md, lg), add color variants (success, warning, danger, info, neutral), add optional icon slot using Remix Icons, add dot indicator variant, and ensure full accessibility."
+  },
+  "ruleSet": "improvement"
+}

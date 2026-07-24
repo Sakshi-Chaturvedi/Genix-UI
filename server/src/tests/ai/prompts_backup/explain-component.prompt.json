@@ -1,0 +1,10 @@
+{
+  "id": "explain-component",
+  "name": "Explain Existing Component",
+  "feature": "explain",
+  "endpoint": "/api/ai/explain",
+  "body": {
+    "code": "import React, { useState, useCallback } from 'react';\nimport styles from './Toggle.module.css';\n\ninterface ToggleProps {\n  checked?: boolean;\n  defaultChecked?: boolean;\n  onChange?: (checked: boolean) => void;\n  disabled?: boolean;\n  label?: string;\n  size?: 'sm' | 'md' | 'lg';\n}\n\nexport const Toggle: React.FC<ToggleProps> = ({\n  checked: controlledChecked,\n  defaultChecked = false,\n  onChange,\n  disabled = false,\n  label,\n  size = 'md',\n}) => {\n  const isControlled = controlledChecked !== undefined;\n  const [internalChecked, setInternalChecked] = useState(defaultChecked);\n  const isChecked = isControlled ? controlledChecked : internalChecked;\n\n  const handleToggle = useCallback(() => {\n    if (disabled) return;\n    const newValue = !isChecked;\n    if (!isControlled) setInternalChecked(newValue);\n    onChange?.(newValue);\n  }, [disabled, isChecked, isControlled, onChange]);\n\n  return (\n    <label className={`${styles.wrapper} ${styles[size]} ${disabled ? styles.disabled : ''}`}>\n      <button\n        role=\"switch\"\n        aria-checked={isChecked}\n        aria-label={label}\n        disabled={disabled}\n        onClick={handleToggle}\n        className={`${styles.toggle} ${isChecked ? styles.on : styles.off}`}\n      >\n        <span className={styles.thumb} />\n      </button>\n      {label && <span className={styles.label}>{label}</span>}\n    </label>\n  );\n};\n"
+  },
+  "ruleSet": "explanation"
+}

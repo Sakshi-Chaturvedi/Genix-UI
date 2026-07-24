@@ -1,0 +1,10 @@
+{
+  "id": "profile-card",
+  "name": "Profile Card",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a stylish Profile Card component showing avatar, name, role/title, bio, social media links with Remix Icons, follow/message action buttons, follower stats, hover scale animation, glassmorphism or gradient background effect, and full responsive layout."
+  },
+  "ruleSet": "profile-card"
+}

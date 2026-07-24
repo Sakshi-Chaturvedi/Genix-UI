@@ -1,0 +1,10 @@
+{
+  "id": "pricing",
+  "name": "Pricing Page",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a complete Pricing Page with a monthly/annual billing toggle (with savings badge), three pricing tier cards (Starter, Pro, Enterprise), feature comparison list with checkmark icons from Remix Icons, highlighted recommended plan with glow effect, CTA buttons per tier, FAQ accordion section, and responsive layout."
+  },
+  "ruleSet": "page-generic"
+}

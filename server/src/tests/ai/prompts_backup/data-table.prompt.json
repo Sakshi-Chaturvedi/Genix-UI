@@ -1,0 +1,10 @@
+{
+  "id": "data-table",
+  "name": "Data Table",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a feature-rich Data Table page component with column sorting, client-side pagination, row selection checkboxes, search/filter input, column visibility toggle, row action buttons with Remix Icons, empty state display, loading skeleton rows, and fully responsive layout that scrolls horizontally on small screens."
+  },
+  "ruleSet": "page-generic"
+}

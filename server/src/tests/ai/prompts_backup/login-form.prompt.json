@@ -1,0 +1,10 @@
+{
+  "id": "login-form",
+  "name": "Login Form",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a beautiful Login Form page with email and password fields, show/hide password toggle with Remix Icon, remember me checkbox, forgot password link, submit button with loading state, social OAuth buttons (Google, GitHub), form validation with error messages, ARIA labels for all inputs, and animated card entrance."
+  },
+  "ruleSet": "page-generic"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "image-gallery",
+  "name": "Image Gallery",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a masonry Image Gallery page with category filter tabs, hover overlay with title and action icons using Remix Icons, lightbox modal on click with prev/next navigation, keyboard arrow support, loading skeleton, infinite scroll or pagination, and fully responsive CSS Modules grid layout."
+  },
+  "ruleSet": "page-generic"
+}

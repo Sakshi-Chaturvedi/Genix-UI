@@ -1,0 +1,10 @@
+{
+  "id": "navbar",
+  "name": "Responsive Navbar",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a fully responsive Navbar component with logo, navigation links, search bar, user avatar dropdown, mobile hamburger menu with slide-in animation, active link highlighting, keyboard navigation support, and sticky positioning with shadow on scroll."
+  },
+  "ruleSet": "navbar"
+}

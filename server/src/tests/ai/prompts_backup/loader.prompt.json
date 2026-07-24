@@ -1,0 +1,10 @@
+{
+  "id": "loader",
+  "name": "Loader / Spinner",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a Loader component with multiple variants (spinner, dots, pulse, progress bar), size support (sm, md, lg), color theme prop, optional label text, ARIA live region with aria-busy and aria-label, and smooth CSS animation using CSS Modules keyframes."
+  },
+  "ruleSet": "loader"
+}

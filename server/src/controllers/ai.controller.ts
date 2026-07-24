@@ -1,8 +1,18 @@
 import { Request, Response } from "express";
 import catchAsync from "../utils/catchAsync.js";
 import sendResponse from "../utils/sendResponse.js";
-import { AIService, AIProviderFactory } from "../services/ai/ai.service.js";
-import aiConfig from "../config/ai.config.js";
+import { AIService, createOrchestrator } from "../services/ai/ai.service.js";
+import logger from "../utils/logger.js";
+import { performance } from "perf_hooks";
+
+/**
+ * Creates a fresh AIService backed by the configured provider chain.
+ * The orchestrator is created per-request so aiConfig changes (hot-reload)
+ * are always reflected without restarting the server.
+ */
+function buildAIService(): AIService {
+  return new AIService(createOrchestrator());
+}
 
 /**
  * POST /api/ai/generate
@@ -10,14 +20,20 @@ import aiConfig from "../config/ai.config.js";
  */
 export const generateComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const providerName = aiConfig.defaultProvider;
-    const provider = AIProviderFactory.getProvider(providerName);
-    const aiService = new AIService(provider);
+    const startTime = req.body.options?.startTime ?? performance.now();
+    logger.info(`[1] Request received - 0ms`);
+    logger.info(`[2] Controller entered - ${Math.round(performance.now() - startTime)}ms`);
+
+    req.body.options = { ...req.body.options, startTime };
+
+    const aiService = buildAIService();
 
     const generationResult = await aiService.generateComponent({
       prompt: req.body.prompt,
       options: req.body.options,
     });
+
+    logger.info(`[10] Response returned - ${Math.round(performance.now() - startTime)}ms`);
 
     sendResponse(res, {
       statusCode: 200,
@@ -40,9 +56,7 @@ export const generateComponent = catchAsync(
  */
 export const convertComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const providerName = aiConfig.defaultProvider;
-    const provider = AIProviderFactory.getProvider(providerName);
-    const aiService = new AIService(provider);
+    const aiService = buildAIService();
 
     const conversionResult = await aiService.convertJsToTs({
       code: req.body.code,
@@ -72,9 +86,7 @@ export const convertComponent = catchAsync(
  */
 export const improveComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const providerName = aiConfig.defaultProvider;
-    const provider = AIProviderFactory.getProvider(providerName);
-    const aiService = new AIService(provider);
+    const aiService = buildAIService();
 
     const improvementResult = await aiService.improveComponent({
       code: req.body.code,
@@ -103,9 +115,7 @@ export const improveComponent = catchAsync(
  */
 export const explainComponent = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const providerName = aiConfig.defaultProvider;
-    const provider = AIProviderFactory.getProvider(providerName);
-    const aiService = new AIService(provider);
+    const aiService = buildAIService();
 
     const explanationResult = await aiService.explainComponent({
       code: req.body.code,
@@ -133,9 +143,7 @@ export const explainComponent = catchAsync(
  */
 export const generatePage = catchAsync(
   async (req: Request, res: Response): Promise<void> => {
-    const providerName = aiConfig.defaultProvider;
-    const provider = AIProviderFactory.getProvider(providerName);
-    const aiService = new AIService(provider);
+    const aiService = buildAIService();
 
     const generationResult = await aiService.generatePage({
       prompt: req.body.prompt,

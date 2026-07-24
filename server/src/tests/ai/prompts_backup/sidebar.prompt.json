@@ -1,0 +1,10 @@
+{
+  "id": "sidebar",
+  "name": "Sidebar Navigation",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a collapsible Sidebar Navigation component with logo, grouped nav links with Remix Icons, active state highlighting, collapse toggle button with smooth width animation, user profile section at bottom, nested sub-menu support with expand/collapse, tooltip labels in collapsed mode, and responsive mobile drawer."
+  },
+  "ruleSet": "page-generic"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "button",
+  "name": "Animated Button",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a modern animated Button component with variants (primary, secondary, danger, ghost), sizes (sm, md, lg), loading state with spinner, disabled state, optional left and right icon slots using Remix Icons, hover and click micro-animations, and full accessibility support."
+  },
+  "ruleSet": "button"
+}

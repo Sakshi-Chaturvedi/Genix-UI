@@ -3,7 +3,7 @@ import { SYSTEM_PROMPT } from "./system.prompt.js";
 
 export const componentPrompt: IPromptTemplate = {
   name: "component",
-  version: "v1.0.0",
+  version: "v1.2.0",
   systemPrompt: SYSTEM_PROMPT,
   buildUserPrompt: (inputs: { prompt: string }) => `
 FEATURE: Component Generation
@@ -11,10 +11,17 @@ Generate a premium reusable React component based on the following request:
 "${inputs.prompt}"
 
 Guidelines:
-- Ensure the component supports various states: loading, disabled, error, active.
-- Incorporate icon support where appropriate (use inline SVGs or import icons from standard libraries like "remixicon-react" or "lucide-react").
-- Include CSS transitions, hover effects, or micro-animations for interactive elements.
-- Design the component API props to be flexible, reusable, and extensible.
-- Enforce strict responsiveness and cross-device support using clean CSS media queries in the CSS module file.
+- Support states: loading, disabled, error, active.
+- Use icons (e.g., remixicon-react) and micro-animations.
+- Flexible API props and clean CSS media queries in the CSS module (e.g., @media (max-width: 768px)).
+
+Requirements:
+- MUST use named export: "export const ComponentName: React.FC<ComponentNameProps> = ..." (or "export const ComponentName = forwardRef...").
+- Include explicit type annotation ": React.FC<ComponentNameProps>" (or "React.FC") and extend "React.ButtonHTMLAttributes<HTMLButtonElement>" (or relevant HTML element attributes).
+- Interface MUST explicitly include at least one string prop typed as ": string" (e.g., label?: string; or title?: string;) and one boolean prop typed as ": boolean" (e.g., isLoading?: boolean; or isDisabled?: boolean;).
+- Apply tabIndex and onKeyDown to interactive elements.
+- CSS modules only, no inline styles or hardcoded string classNames. Include at least one responsive @media query in the CSS module.
 `,
 };
+
+

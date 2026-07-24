@@ -3,6 +3,7 @@ export interface IGenerationOptions {
   maxTokens?: number;
   timeout?: number;
   retries?: number;
+  startTime?: number;
 }
 
 export interface IGeneratedFile {
@@ -18,6 +19,41 @@ export interface IGenerationMetadata {
   model?: string;
   provider?: string;
   promptVersion?: string;
+  /** Total retries across all providers */
+  retryCount?: number;
+  /** Number of provider switches that occurred */
+  fallbackCount?: number;
+  /** Ordered list of providers that were attempted */
+  providerSequence?: string[];
+  /** Reason for ultimate failure (if any) */
+  failureReason?: string;
+  /** Per-provider attempt records from the orchestrator */
+  attempts?: IFallbackAttempt[];
+  /** Full pipeline stats snapshot */
+  pipelineStats?: Record<string, any>;
+}
+
+/** Single-provider attempt record stored by the orchestrator */
+export interface IFallbackAttempt {
+  provider: string;
+  model: string;
+  latencyMs: number;
+  retryCount: number;
+  timedOut: boolean;
+  errorName?: string;
+  errorMessage?: string;
+}
+
+/** Aggregated pipeline-level metrics returned by the orchestrator */
+export interface IPipelineMetrics {
+  totalLatencyMs: number;
+  fallbackCount: number;
+  totalRetryCount: number;
+  providerSequence: string[];
+  providerUsed: string;
+  tokenUsage: number;
+  failureReason?: string;
+  attempts: IFallbackAttempt[];
 }
 
 export interface IAIRequest {

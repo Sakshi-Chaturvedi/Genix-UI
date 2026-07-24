@@ -1,0 +1,10 @@
+{
+  "id": "tabs",
+  "name": "Tabs Component",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a Tabs component with animated active indicator sliding underline, horizontal and vertical orientations, lazy-loaded tab panels, keyboard arrow navigation, ARIA tablist/tab/tabpanel roles, disabled tab support, and icon support with Remix Icons."
+  },
+  "ruleSet": "tabs"
+}

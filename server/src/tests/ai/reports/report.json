@@ -1,0 +1,222 @@
+{
+  "runId": "run-1784902367041-e7c2z",
+  "timestamp": "2026-07-24T14:13:36.194Z",
+  "config": {
+    "apiBaseUrl": "http://localhost:5000",
+    "provider": "gemini",
+    "model": "gemini-2.5-flash",
+    "delayBetweenTestsMs": 2000
+  },
+  "summary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0,
+    "passRate": 100,
+    "averageLatencyMs": 23540,
+    "averageQualityScore": 100,
+    "totalDurationMs": 49153,
+    "totalFallbackCount": 0,
+    "totalRetryCount": 0
+  },
+  "results": [
+    {
+      "id": "accordion",
+      "name": "Accordion Component",
+      "feature": "generate",
+      "passed": true,
+      "latencyMs": 24489,
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "promptVersion": "v1.2.0",
+      "filesGenerated": 5,
+      "validation": {
+        "structureValid": true,
+        "structureErrors": [],
+        "qualityPassed": [
+          "Contains required token: \"interface\"",
+          "Contains required token: \"export const\"",
+          "Contains required token: \".module.css\"",
+          "Contains required token: \"aria-expanded\"",
+          "Contains required token: \"aria-controls\"",
+          "Does not contain forbidden token: \"any\"",
+          "Does not contain forbidden token: \"style={{\"",
+          "Does not contain forbidden token: \"TODO\"",
+          "Does not contain forbidden token: \"Tailwind\"",
+          "[a11y] Found: \"aria-expanded\"",
+          "[a11y] Found: \"aria-controls\"",
+          "[a11y] Found: \"role=\"",
+          "[arch] Found: \"export const Accordion\"",
+          "[style] Found: \".module.css\"",
+          "[ts] Found: \"interface\"",
+          "[ts] Found: \": string\"",
+          "[ts] Found: \": boolean\"",
+          "[ts] Found: \": React.ReactNode\"",
+          "[responsive] CSS media queries detected"
+        ],
+        "qualityFailed": [],
+        "qualityScore": {
+          "accessibility": 20,
+          "typing": 20,
+          "architecture": 20,
+          "styling": 20,
+          "responsiveness": 20,
+          "total": 100,
+          "percentage": 100
+        }
+      },
+      "timestamp": "2026-07-24T14:12:47.041Z",
+      "fallbackCount": 0,
+      "retryCount": 0,
+      "providerSequence": [
+        "gemini"
+      ],
+      "attempts": [
+        {
+          "provider": "gemini",
+          "model": "gemini-2.5-flash",
+          "latencyMs": 24376,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": true
+        }
+      ],
+      "pipelineStats": {
+        "gemini": {
+          "successRate": 100,
+          "avgLatencyMs": 26840,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 3
+        },
+        "openrouter": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "groq": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "openai": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        }
+      }
+    },
+    {
+      "id": "button",
+      "name": "Animated Button",
+      "feature": "generate",
+      "passed": true,
+      "latencyMs": 22591,
+      "provider": "gemini",
+      "model": "gemini-2.5-flash",
+      "promptVersion": "v1.2.0",
+      "filesGenerated": 4,
+      "validation": {
+        "structureValid": true,
+        "structureErrors": [],
+        "qualityPassed": [
+          "Contains required token: \"interface\"",
+          "Contains required token: \"export const\"",
+          "Contains required token: \"ButtonProps\"",
+          "Contains required token: \".module.css\"",
+          "Contains required token: \"disabled\"",
+          "Contains required token: \"onClick\"",
+          "Does not contain forbidden token: \"any\"",
+          "Does not contain forbidden token: \"style={{\"",
+          "Does not contain forbidden token: \"className=\"\"",
+          "Does not contain forbidden token: \"TODO\"",
+          "Does not contain forbidden token: \"Tailwind\"",
+          "Does not contain forbidden token: \"styled-components\"",
+          "Does not contain forbidden token: \"@emotion\"",
+          "[a11y] Found: \"aria-\"",
+          "[a11y] Found: \"role=\"",
+          "[a11y] Found: \"tabIndex\"",
+          "[a11y] Found: \"onKeyDown\"",
+          "[arch] Found: \"export const Button\"",
+          "[arch] Found: \"interface Button\"",
+          "[style] Found: \".module.css\"",
+          "[ts] Found: \"interface\"",
+          "[ts] Found: \": React.FC\"",
+          "[ts] Found: \"React.ButtonHTMLAttributes\"",
+          "[ts] Found: \": string\"",
+          "[ts] Found: \": boolean\"",
+          "[responsive] CSS media queries detected"
+        ],
+        "qualityFailed": [],
+        "qualityScore": {
+          "accessibility": 20,
+          "typing": 20,
+          "architecture": 20,
+          "styling": 20,
+          "responsiveness": 20,
+          "total": 100,
+          "percentage": 100
+        }
+      },
+      "timestamp": "2026-07-24T14:13:13.586Z",
+      "fallbackCount": 0,
+      "retryCount": 0,
+      "providerSequence": [
+        "gemini"
+      ],
+      "attempts": [
+        {
+          "provider": "gemini",
+          "model": "gemini-2.5-flash",
+          "latencyMs": 22552,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": true
+        }
+      ],
+      "pipelineStats": {
+        "gemini": {
+          "successRate": 100,
+          "avgLatencyMs": 25768,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 4
+        },
+        "openrouter": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "groq": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "openai": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        }
+      }
+    }
+  ]
+}

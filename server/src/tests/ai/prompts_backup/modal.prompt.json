@@ -1,0 +1,10 @@
+{
+  "id": "modal",
+  "name": "Modal Dialog",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create an accessible Modal dialog component with backdrop blur, smooth fade+scale open/close animation, header, body, footer sections, close button, ESC key support, focus trap, scroll lock, sizes (sm, md, lg, fullscreen), and proper ARIA dialog role."
+  },
+  "ruleSet": "modal"
+}

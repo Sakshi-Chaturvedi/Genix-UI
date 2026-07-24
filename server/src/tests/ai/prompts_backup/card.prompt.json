@@ -1,0 +1,10 @@
+{
+  "id": "card",
+  "name": "Card Component",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a versatile Card component with image, title, subtitle, body content, footer actions, hover elevation animation, optional badge/tag, loading skeleton state, and full responsive layout using CSS Modules."
+  },
+  "ruleSet": "card"
+}

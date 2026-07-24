@@ -1,87 +1,63 @@
-import AppError from "../../../utils/errorHandler.js";
-import logger from "../../../utils/logger.js";
+import { JSONExtractor } from "../../../utils/ai/json.extractor.js";
+import { ResponseNormalizer } from "../../../utils/ai/response.normalizer.js";
+import { validateAIResponse, AIResponsePayload } from "../../../utils/ai/ai.response.schema.js";
 import { IGeneratedFile } from "../../../types/ai.types.js";
+import logger from "../../../utils/logger.js";
+import { performance } from "perf_hooks";
+
+export interface IParsedResponse {
+  files: IGeneratedFile[];
+  explanation?: string;
+  normalized: AIResponsePayload;
+}
 
 export class ResponseParser {
   /**
-   * Sanitizes, parses, and validates the raw response string from an AI provider.
+   * Sanitizes, parses, normalizes, and validates the raw response string from an AI provider.
+   *
+   * @param responseText - Raw string from the AI provider
+   * @param provider - Provider name (defaults to "unknown")
+   * @param model - Model name (defaults to "unknown")
+   * @returns Typed response object containing files, explanation, and the full normalized schema
    */
-  public static parse(responseText: string | null | undefined): { files: IGeneratedFile[]; explanation?: string } {
-    if (!responseText) {
-      throw new AppError("Empty response received from AI provider", 502);
-    }
+  public static parse(
+    responseText: string | null | undefined,
+    provider = "unknown",
+    model = "unknown",
+    startTime?: number
+  ): IParsedResponse {
+    const responseSize = responseText ? responseText.length : 0;
+    const baseTime = startTime ?? performance.now();
 
-    let sanitized = responseText.trim();
+    // 1. JSON Extraction (Step 1)
+    const extractStart = performance.now();
+    const rawJson = JSONExtractor.extract(responseText as string);
+    const parsingTime = Math.round(performance.now() - extractStart);
+    logger.info(`[8] JSON parsed - ${Math.round(performance.now() - baseTime)}ms`);
 
-    // 1. Strip markdown code fences if the model wrapped the JSON
-    if (sanitized.startsWith("```")) {
-      const firstNewlineIndex = sanitized.indexOf("\n");
-      if (firstNewlineIndex !== -1) {
-        sanitized = sanitized.slice(firstNewlineIndex).trim();
-      }
-      if (sanitized.endsWith("```")) {
-        sanitized = sanitized.slice(0, -3).trim();
-      }
-    }
+    // 2. Normalization (Step 2)
+    const normalizedJson = ResponseNormalizer.normalize(rawJson, provider, model);
 
-    // 2. Isolate the main JSON object if there's any surrounding text/garbage
-    const jsonStart = sanitized.indexOf("{");
-    const jsonEnd = sanitized.lastIndexOf("}");
-    if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
-      sanitized = sanitized.slice(jsonStart, jsonEnd + 1);
-    }
+    // 3. Zod Validation (Step 3)
+    const validationStart = performance.now();
+    const validated = validateAIResponse(normalizedJson);
+    const validationTime = Math.round(performance.now() - validationStart);
+    logger.info(`[9] Schema validated - ${Math.round(performance.now() - baseTime)}ms`);
 
-    // 3. Attempt JSON parsing
-    let parsed: any;
-    try {
-      parsed = JSON.parse(sanitized);
-    } catch (e: any) {
-      logger.error("Failed to parse AI provider response as JSON. Raw output below.", e, { rawOutput: responseText });
-      throw new AppError("AI provider response format is not valid JSON", 502);
-    }
-
-    // 4. Strict Quality & Structure Validation (Step 8)
-    if (!parsed || typeof parsed !== "object") {
-      throw new AppError("AI provider response must be a JSON object", 502);
-    }
-
-    if (!Array.isArray(parsed.files)) {
-      throw new AppError("AI provider response is missing a valid 'files' array", 502);
-    }
-
-    const validatedFiles = parsed.files.map((file: any, index: number) => {
-      if (!file || typeof file !== "object") {
-        throw new AppError(`Malformed file structure at index ${index}`, 502);
-      }
-      if (!file.path || typeof file.path !== "string") {
-        throw new AppError(`Invalid file structure at index ${index}: 'path' is required and must be a string`, 502);
-      }
-      if (typeof file.content !== "string") {
-        throw new AppError(`Invalid file structure at index ${index}: 'content' must be a string`, 502);
-      }
-      if (!file.type || !["code", "style", "test", "storybook", "documentation", "config"].includes(file.type)) {
-        throw new AppError(
-          `Invalid file type at index ${index}: '${file.type || "undefined"}'. Expected 'code' | 'style' | 'test' | 'storybook' | 'documentation' | 'config'`,
-          502
-        );
-      }
-      if (!file.language || typeof file.language !== "string") {
-        throw new AppError(`Invalid file structure at index ${index}: 'language' must be a string`, 502);
-      }
-
-      return {
-        path: file.path,
-        content: file.content,
-        type: file.type as "code" | "style" | "test" | "storybook" | "documentation" | "config",
-        language: file.language,
-      };
+    // 4. Logging (Step 7)
+    logger.info("AI response parsing and validation completed", {
+      provider,
+      model,
+      responseSize,
+      parsingTimeMs: parsingTime,
+      validationTimeMs: validationTime,
     });
 
-    const explanation = typeof parsed.explanation === "string" ? parsed.explanation : undefined;
-
+    // 5. Return Typed Object (Step 6 / Backward compatibility)
     return {
-      files: validatedFiles,
-      explanation,
+      files: validated.data.files as IGeneratedFile[],
+      explanation: validated.data.explanation,
+      normalized: validated,
     };
   }
 }

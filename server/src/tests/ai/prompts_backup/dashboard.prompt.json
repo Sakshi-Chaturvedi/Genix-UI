@@ -1,0 +1,10 @@
+{
+  "id": "dashboard",
+  "name": "Analytics Dashboard",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a full Analytics Dashboard page with sidebar navigation, top header with user avatar, KPI stat cards with trend indicators and Remix Icons, a line chart placeholder component, a recent activity feed, a data table with sortable columns, and responsive grid layout using CSS Modules."
+  },
+  "ruleSet": "page-generic"
+}

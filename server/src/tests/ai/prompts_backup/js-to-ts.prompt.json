@@ -1,0 +1,12 @@
+{
+  "id": "js-to-ts",
+  "name": "JS to TS Conversion",
+  "feature": "convert",
+  "endpoint": "/api/ai/convert",
+  "body": {
+    "code": "import React, { useState } from 'react';\n\nfunction Counter({ initialCount, step, onCountChange }) {\n  const [count, setCount] = useState(initialCount || 0);\n\n  function handleIncrement() {\n    const newCount = count + (step || 1);\n    setCount(newCount);\n    if (onCountChange) onCountChange(newCount);\n  }\n\n  function handleDecrement() {\n    const newCount = count - (step || 1);\n    setCount(newCount);\n    if (onCountChange) onCountChange(newCount);\n  }\n\n  function handleReset() {\n    setCount(initialCount || 0);\n    if (onCountChange) onCountChange(initialCount || 0);\n  }\n\n  return (\n    <div className=\"counter\">\n      <button onClick={handleDecrement}>-</button>\n      <span>{count}</span>\n      <button onClick={handleIncrement}>+</button>\n      <button onClick={handleReset}>Reset</button>\n    </div>\n  );\n}\n\nexport default Counter;\n",
+    "sourceLanguage": "javascript",
+    "targetLanguage": "typescript"
+  },
+  "ruleSet": "conversion"
+}

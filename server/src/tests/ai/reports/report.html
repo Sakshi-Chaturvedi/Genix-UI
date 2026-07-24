@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Genix UI – AI Regression Report</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:2rem}
+    h1{font-size:1.75rem;font-weight:700;margin-bottom:.25rem;background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .subtitle{color:#64748b;font-size:.875rem;margin-bottom:2rem}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
+    .stat{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:1.25rem}
+    .stat-label{font-size:.75rem;color:#64748b;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem}
+    .stat-value{font-size:1.75rem;font-weight:700}
+    .stat-value.green{color:#22c55e}.stat-value.red{color:#ef4444}.stat-value.yellow{color:#f59e0b}.stat-value.blue{color:#60a5fa}.stat-value.purple{color:#a78bfa}
+    table{width:100%;border-collapse:collapse;background:#1e293b;border-radius:12px;overflow:hidden;font-size:.8rem}
+    thead{background:#0f172a}
+    th{padding:.75rem 1rem;text-align:left;color:#64748b;font-weight:600;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid #334155}
+    td{padding:.75rem 1rem;border-bottom:1px solid #1e293b;vertical-align:top}
+    .row-pass td:first-child{border-left:3px solid #22c55e}
+    .row-fail td:first-child{border-left:3px solid #ef4444}
+    .badge{display:inline-block;padding:.2rem .6rem;border-radius:999px;font-size:.7rem;font-weight:700;letter-spacing:.05em}
+    .badge.pass{background:#052e16;color:#22c55e;border:1px solid #16a34a}
+    .badge.fail{background:#2d0000;color:#ef4444;border:1px solid #dc2626}
+    .score-bar-wrap{width:100%;background:#334155;border-radius:999px;height:6px;margin-bottom:.3rem;position:relative}
+    .score-bar{height:6px;border-radius:999px;transition:width .3s}
+    .score-label{font-size:.7rem;color:#94a3b8}
+    .failures ul{list-style:none;padding:0}
+    .failures li{color:#f87171;font-size:.72rem;margin-bottom:.2rem}
+    .failures li::before{content:"✗ ";color:#ef4444}
+    .arrow{color:#6366f1;font-weight:bold}
+    .fb-count{display:inline-block;background:#451a03;color:#f59e0b;border:1px solid #b45309;border-radius:999px;padding:.1rem .5rem;font-size:.7rem;font-weight:700}
+    .fb-none{color:#475569;font-size:.7rem}
+    .retry-count{display:inline-block;background:#1e1b4b;color:#a78bfa;border:1px solid #6366f1;border-radius:999px;padding:.1rem .5rem;font-size:.7rem;font-weight:700}
+    .meta{color:#475569;font-size:.75rem;margin-top:2rem;text-align:center}
+    .run-id{font-family:monospace;color:#6366f1}
+  </style>
+</head>
+<body>
+  <h1>⚡ Genix UI — AI Regression Report</h1>
+  <p class="subtitle">Run ID: <span class="run-id">run-1784902367041-e7c2z</span> &nbsp;|&nbsp; 24/7/2026, 7:43:36 pm &nbsp;|&nbsp; Provider: gemini / gemini-2.5-flash</p>
+
+  <div class="grid">
+    <div class="stat"><div class="stat-label">Pass Rate</div><div class="stat-value" style="color:#22c55e">100%</div></div>
+    <div class="stat"><div class="stat-label">Passed</div><div class="stat-value green">2</div></div>
+    <div class="stat"><div class="stat-label">Failed</div><div class="stat-value red">0</div></div>
+    <div class="stat"><div class="stat-label">Total Tests</div><div class="stat-value blue">2</div></div>
+    <div class="stat"><div class="stat-label">Avg Latency</div><div class="stat-value yellow">23,540 ms</div></div>
+    <div class="stat"><div class="stat-label">Avg Quality</div><div class="stat-value" style="color:#22c55e">100%</div></div>
+    <div class="stat"><div class="stat-label">Total Fallbacks</div><div class="stat-value green">0</div></div>
+    <div class="stat"><div class="stat-label">Total Retries</div><div class="stat-value purple">0</div></div>
+    <div class="stat"><div class="stat-label">Total Duration</div><div class="stat-value blue">49.2 s</div></div>
+  </div>
+
+  
+    <h2 style="margin-top:2rem;margin-bottom:0.75rem;font-size:1.2rem;font-weight:600;background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">📊 Provider Performance Breakdown</h2>
+    <table style="margin-bottom:2.5rem;">
+      <thead>
+        <tr>
+          <th>Provider</th>
+          <th>Success Rate</th>
+          <th>Avg Latency</th>
+          <th>Total Attempts</th>
+          <th>Total Failures</th>
+          <th>Total Retries</th>
+          <th>Cooldown Activations</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      <tr>
+        <td style="font-weight:600;text-transform:capitalize;">gemini</td>
+        <td style="color:#22c55e">100%</td>
+        <td>25,768 ms</td>
+        <td>4</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+    
+      <tr>
+        <td style="font-weight:600;text-transform:capitalize;">openrouter</td>
+        <td style="color:#ef4444">0%</td>
+        <td>0 ms</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+    
+      <tr>
+        <td style="font-weight:600;text-transform:capitalize;">groq</td>
+        <td style="color:#ef4444">0%</td>
+        <td>0 ms</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+    
+      <tr>
+        <td style="font-weight:600;text-transform:capitalize;">openai</td>
+        <td style="color:#ef4444">0%</td>
+        <td>0 ms</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+    
+      </tbody>
+    </table>
+  
+
+  <h2 style="margin-bottom:0.75rem;font-size:1.2rem;font-weight:600;background:linear-gradient(135deg,#6366f1,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">📋 Test Case Details</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Test</th>
+        <th>Latency</th>
+        <th>Files</th>
+        <th>Provider Chain</th>
+        <th>Fallbacks</th>
+        <th>Retries</th>
+        <th>Prompt Ver.</th>
+        <th>Quality Score</th>
+        <th>Failures</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+  <tr class="row-pass">
+    <td><span class="badge pass">PASS</span></td>
+    <td><strong>Accordion Component</strong><br/><small>accordion / generate</small></td>
+    <td>24,489 ms</td>
+    <td>5</td>
+    <td>gemini<br/><small>gemini-2.5-flash</small></td>
+    <td><span class="fb-none">–</span></td>
+    <td>–</td>
+    <td>v1.2.0</td>
+    <td>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
+      <small>A11y:20 | TS:20 | Arch:20 | CSS:20 | Resp:20</small>
+    </td>
+    <td class="failures">–</td>
+  </tr>
+  <tr class="row-pass">
+    <td><span class="badge pass">PASS</span></td>
+    <td><strong>Animated Button</strong><br/><small>button / generate</small></td>
+    <td>22,591 ms</td>
+    <td>4</td>
+    <td>gemini<br/><small>gemini-2.5-flash</small></td>
+    <td><span class="fb-none">–</span></td>
+    <td>–</td>
+    <td>v1.2.0</td>
+    <td>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
+      <small>A11y:20 | TS:20 | Arch:20 | CSS:20 | Resp:20</small>
+    </td>
+    <td class="failures">–</td>
+  </tr>
+    </tbody>
+  </table>
+
+  <p class="meta">Generated by Genix UI AI Regression Framework &nbsp;|&nbsp; Fri, 24 Jul 2026 14:13:36 GMT</p>
+</body>
+</html>

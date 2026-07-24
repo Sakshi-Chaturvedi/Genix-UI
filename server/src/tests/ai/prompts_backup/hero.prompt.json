@@ -1,0 +1,10 @@
+{
+  "id": "hero",
+  "name": "Hero Section",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a modern Hero Section page with animated headline, gradient text effect, compelling subtitle, primary and secondary CTA buttons, background particle or gradient animation, responsive two-column layout (text + illustration placeholder), and smooth scroll indicator."
+  },
+  "ruleSet": "page-generic"
+}

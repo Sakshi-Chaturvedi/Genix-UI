@@ -1,0 +1,10 @@
+{
+  "id": "tooltip",
+  "name": "Tooltip Component",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a Tooltip component with fade animation, placement options (top, bottom, left, right, auto), delay support, max width, arrow pointer, keyboard focus trigger support, ARIA describedby attribute, and portal rendering to avoid z-index clipping issues."
+  },
+  "ruleSet": "tooltip"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "accordion",
+  "name": "Accordion Component",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a smooth animated Accordion component with multiple items, single or multi-expand mode, smooth height transition animation (using CSS module class toggling for height/max-height transitions, absolutely NO inline style attributes or 'style={{'), Remix Icon chevron rotation, keyboard navigation, ARIA expanded/controls attributes, and customizable styling via CSS Modules."
+  },
+  "ruleSet": "accordion"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "footer",
+  "name": "Footer Component",
+  "feature": "page",
+  "endpoint": "/api/ai/page",
+  "body": {
+    "prompt": "Create a multi-column Footer page component with logo, description, navigation link columns, social media icons from Remix Icons, newsletter email subscription input with submit button, copyright notice, responsive CSS Modules grid that stacks to single column on mobile, and smooth link hover animations."
+  },
+  "ruleSet": "page-generic"
+}

@@ -4,10 +4,16 @@ import env from "./config/env.js";
 import logger from "./utils/logger.js";
 import connectDB from "./config/db.js";
 
+import { validateProvidersOnStartup } from "./utils/ai/provider.validator.js";
+
 const server = http.createServer(app);
 
 const startServer = async () => {
   await connectDB();
+  
+  // Validate AI Providers
+  await validateProvidersOnStartup();
+
   server.listen(env.PORT, () => {
     logger.info(`🚀 Server running in ${env.NODE_ENV} mode on port ${env.PORT}`);
   });

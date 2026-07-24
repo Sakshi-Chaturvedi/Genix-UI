@@ -1,0 +1,53 @@
+[
+  {
+    "provider": "gemini",
+    "configuredModel": "gemini-2.5-flash",
+    "endpoint": "https://generativelanguage.googleapis.com",
+    "apiKeyPresent": true,
+    "status": "PASS",
+    "providerAvailable": true,
+    "latencyMs": 1613,
+    "httpStatus": 200,
+    "rawResponseText": "{\n  \"message\": \"",
+    "parserStatus": "not_applicable"
+  },
+  {
+    "provider": "openrouter",
+    "configuredModel": "meta-llama/llama-3.1-70b-instruct",
+    "endpoint": "https://openrouter.ai/api/v1",
+    "apiKeyPresent": true,
+    "status": "PASS",
+    "providerAvailable": true,
+    "latencyMs": 918,
+    "httpStatus": 200,
+    "rawResponseText": "Hello!",
+    "parserStatus": "not_applicable"
+  },
+  {
+    "provider": "groq",
+    "configuredModel": "llama-3.1-8b-instant",
+    "endpoint": "https://api.groq.com",
+    "apiKeyPresent": true,
+    "status": "PASS",
+    "providerAvailable": true,
+    "latencyMs": 329,
+    "httpStatus": 200,
+    "rawResponseText": "Hello",
+    "parserStatus": "not_applicable"
+  },
+  {
+    "provider": "openai",
+    "configuredModel": "gpt-4o",
+    "endpoint": "https://api.openai.com",
+    "apiKeyPresent": true,
+    "status": "FAIL",
+    "providerAvailable": false,
+    "latencyMs": 1061,
+    "httpStatus": 429,
+    "errorType": "Quota Exceeded",
+    "errorMessage": "You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.",
+    "providerCode": "insufficient_quota",
+    "rawBody": "{\n    \"error\": {\n        \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, read the docs: https://platform.openai.com/docs/guides/error-codes/api-errors.\",\n        \"type\": \"insufficient_quota\",\n        \"param\": null,\n        \"code\": \"insufficient_quota\"\n    }\n}\n",
+    "parserStatus": "not_run"
+  }
+]

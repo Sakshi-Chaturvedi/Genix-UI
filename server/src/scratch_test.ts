@@ -1,64 +1,16 @@
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import env from "./config/env.js";
-import { User } from "./models/user.model.js";
+import { validateQuality } from "./tests/ai/validators/output.validator.js";
+import { ruleRegistry } from "./tests/ai/rules/rule.registry.js";
+import { fixtures } from "./tests/ai/scoring/fixtures.js";
 
-async function main() {
-  console.log("Connecting to MongoDB...");
-  await mongoose.connect(env.MONGO_URI);
-  console.log("Connected.");
-
-  let user = await User.findOne();
-  if (!user) {
-    user = await User.create({
-      name: "Test User",
-      email: "test@example.com",
-      password: "password123",
-      role: "user",
-      plan: "free",
-      isEmailVerified: true,
-      refreshTokenVersion: 0,
-    });
-  }
-
-  const token = jwt.sign(
-    { userId: user._id.toString(), role: user.role },
-    env.JWT_ACCESS_SECRET,
-    { expiresIn: "15m" }
-  );
-
-  const payload = {
-    prompt: "Create a modern animated button using React and TypeScript.",
-    feature: "generate-component",
-    model: "gemini-2.5-flash",
-    status: "success",
-    response: {
-      tsx: "export const Button = () => <button>Click Me</button>;",
-      css: ".btn { background: blue; }",
-      usage: "<Button />"
-    },
-    generatedFiles: [
-      "Button.tsx",
-      "Button.css"
-    ],
-    tokens: 420,
-    executionTime: 1650
-  };
-
-  const response = await fetch("http://localhost:5000/api/history", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}`
-    },
-    body: JSON.stringify(payload)
-  });
-
-  console.log("Status:", response.status);
-  const text = await response.text();
-  console.log("Response:", text);
-
-  await mongoose.disconnect();
+function clone(obj: any) {
+  return JSON.parse(JSON.stringify(obj));
 }
 
-main().catch(console.error);
+const res1 = validateQuality(fixtures.button, ruleRegistry.button);
+console.log("Direct Score:", res1.score.percentage);
+console.log("Direct Failed:", res1.failed);
+
+const mutated = clone(fixtures.button);
+const res2 = validateQuality(mutated, ruleRegistry.button);
+console.log("Mutated Score:", res2.score.percentage);
+console.log("Mutated Failed:", res2.failed);

@@ -39,18 +39,18 @@
 </head>
 <body>
   <h1>⚡ Genix UI — AI Regression Report</h1>
-  <p class="subtitle">Run ID: <span class="run-id">run-1784902367041-e7c2z</span> &nbsp;|&nbsp; 24/7/2026, 7:43:36 pm &nbsp;|&nbsp; Provider: gemini / gemini-2.5-flash</p>
+  <p class="subtitle">Run ID: <span class="run-id">run-1787810730293-kmvjc</span> &nbsp;|&nbsp; 27/8/2026, 11:41:16 am &nbsp;|&nbsp; Provider: gemini / gemini-2.5-flash</p>
 
   <div class="grid">
     <div class="stat"><div class="stat-label">Pass Rate</div><div class="stat-value" style="color:#22c55e">100%</div></div>
-    <div class="stat"><div class="stat-label">Passed</div><div class="stat-value green">2</div></div>
+    <div class="stat"><div class="stat-label">Passed</div><div class="stat-value green">7</div></div>
     <div class="stat"><div class="stat-label">Failed</div><div class="stat-value red">0</div></div>
-    <div class="stat"><div class="stat-label">Total Tests</div><div class="stat-value blue">2</div></div>
-    <div class="stat"><div class="stat-label">Avg Latency</div><div class="stat-value yellow">23,540 ms</div></div>
+    <div class="stat"><div class="stat-label">Total Tests</div><div class="stat-value blue">7</div></div>
+    <div class="stat"><div class="stat-label">Avg Latency</div><div class="stat-value yellow">47,744 ms</div></div>
     <div class="stat"><div class="stat-label">Avg Quality</div><div class="stat-value" style="color:#22c55e">100%</div></div>
-    <div class="stat"><div class="stat-label">Total Fallbacks</div><div class="stat-value green">0</div></div>
-    <div class="stat"><div class="stat-label">Total Retries</div><div class="stat-value purple">0</div></div>
-    <div class="stat"><div class="stat-label">Total Duration</div><div class="stat-value blue">49.2 s</div></div>
+    <div class="stat"><div class="stat-label">Total Fallbacks</div><div class="stat-value yellow">4</div></div>
+    <div class="stat"><div class="stat-label">Total Retries</div><div class="stat-value purple">1</div></div>
+    <div class="stat"><div class="stat-label">Total Duration</div><div class="stat-value blue">346.5 s</div></div>
   </div>
 
   
@@ -71,21 +71,21 @@
         
       <tr>
         <td style="font-weight:600;text-transform:capitalize;">gemini</td>
-        <td style="color:#22c55e">100%</td>
-        <td>25,768 ms</td>
-        <td>4</td>
+        <td style="color:#ef4444">22%</td>
+        <td>27,722 ms</td>
+        <td>9</td>
+        <td>7</td>
         <td>0</td>
-        <td>0</td>
-        <td>0</td>
+        <td>7</td>
       </tr>
     
       <tr>
         <td style="font-weight:600;text-transform:capitalize;">openrouter</td>
-        <td style="color:#ef4444">0%</td>
-        <td>0 ms</td>
+        <td style="color:#22c55e">100%</td>
+        <td>39,703 ms</td>
+        <td>12</td>
         <td>0</td>
-        <td>0</td>
-        <td>0</td>
+        <td>3</td>
         <td>0</td>
       </tr>
     
@@ -134,8 +134,23 @@
   <tr class="row-pass">
     <td><span class="badge pass">PASS</span></td>
     <td><strong>Accordion Component</strong><br/><small>accordion / generate</small></td>
-    <td>24,489 ms</td>
-    <td>5</td>
+    <td>59,566 ms</td>
+    <td>4</td>
+    <td>gemini <span class="arrow">→</span> openrouter<br/><small>meta-llama/llama-3.1-70b-instruct</small></td>
+    <td><span class="fb-count">1</span></td>
+    <td>–</td>
+    <td>v1.2.0</td>
+    <td>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
+      <small>A11y:20 | TS:20 | Arch:20 | CSS:20 | Resp:20</small>
+    </td>
+    <td class="failures">–</td>
+  </tr>
+  <tr class="row-pass">
+    <td><span class="badge pass">PASS</span></td>
+    <td><strong>Animated Button</strong><br/><small>button / generate</small></td>
+    <td>27,969 ms</td>
+    <td>4</td>
     <td>gemini<br/><small>gemini-2.5-flash</small></td>
     <td><span class="fb-none">–</span></td>
     <td>–</td>
@@ -148,12 +163,72 @@
   </tr>
   <tr class="row-pass">
     <td><span class="badge pass">PASS</span></td>
-    <td><strong>Animated Button</strong><br/><small>button / generate</small></td>
-    <td>22,591 ms</td>
+    <td><strong>Card Component</strong><br/><small>card / generate</small></td>
+    <td>51,391 ms</td>
     <td>4</td>
-    <td>gemini<br/><small>gemini-2.5-flash</small></td>
+    <td>gemini <span class="arrow">→</span> openrouter<br/><small>meta-llama/llama-3.1-70b-instruct</small></td>
+    <td><span class="fb-count">1</span></td>
+    <td>–</td>
+    <td>v1.2.0</td>
+    <td>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
+      <small>A11y:20 | TS:20 | Arch:20 | CSS:20 | Resp:20</small>
+    </td>
+    <td class="failures">–</td>
+  </tr>
+  <tr class="row-pass">
+    <td><span class="badge pass">PASS</span></td>
+    <td><strong>Accessible Modal</strong><br/><small>modal / generate</small></td>
+    <td>38,314 ms</td>
+    <td>4</td>
+    <td>openrouter<br/><small>meta-llama/llama-3.1-70b-instruct</small></td>
     <td><span class="fb-none">–</span></td>
     <td>–</td>
+    <td>v1.2.0</td>
+    <td>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
+      <small>A11y:20 | TS:20 | Arch:20 | CSS:20 | Resp:20</small>
+    </td>
+    <td class="failures">–</td>
+  </tr>
+  <tr class="row-pass">
+    <td><span class="badge pass">PASS</span></td>
+    <td><strong>Responsive Navbar</strong><br/><small>navbar / generate</small></td>
+    <td>44,563 ms</td>
+    <td>4</td>
+    <td>gemini <span class="arrow">→</span> openrouter<br/><small>meta-llama/llama-3.1-70b-instruct</small></td>
+    <td><span class="fb-count">1</span></td>
+    <td>–</td>
+    <td>v1.2.0</td>
+    <td>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
+      <small>A11y:20 | TS:20 | Arch:20 | CSS:20 | Resp:20</small>
+    </td>
+    <td class="failures">–</td>
+  </tr>
+  <tr class="row-pass">
+    <td><span class="badge pass">PASS</span></td>
+    <td><strong>Profile Card</strong><br/><small>profile-card / generate</small></td>
+    <td>66,802 ms</td>
+    <td>4</td>
+    <td>openrouter<br/><small>meta-llama/llama-3.1-70b-instruct</small></td>
+    <td><span class="fb-none">–</span></td>
+    <td>–</td>
+    <td>v1.2.0</td>
+    <td>
+      <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
+      <small>A11y:20 | TS:20 | Arch:20 | CSS:20 | Resp:20</small>
+    </td>
+    <td class="failures">–</td>
+  </tr>
+  <tr class="row-pass">
+    <td><span class="badge pass">PASS</span></td>
+    <td><strong>Accessible Tabs</strong><br/><small>tabs / generate</small></td>
+    <td>45,601 ms</td>
+    <td>3</td>
+    <td>gemini <span class="arrow">→</span> openrouter<br/><small>meta-llama/llama-3.1-70b-instruct</small></td>
+    <td><span class="fb-count">1</span></td>
+    <td><span class="retry-count">1</span></td>
     <td>v1.2.0</td>
     <td>
       <div class="score-bar-wrap"><div class="score-bar" style="width:100%;background:#22c55e"></div><span class="score-label">100%</span></div>
@@ -164,6 +239,6 @@
     </tbody>
   </table>
 
-  <p class="meta">Generated by Genix UI AI Regression Framework &nbsp;|&nbsp; Fri, 24 Jul 2026 14:13:36 GMT</p>
+  <p class="meta">Generated by Genix UI AI Regression Framework &nbsp;|&nbsp; Thu, 27 Aug 2026 06:11:16 GMT</p>
 </body>
 </html>

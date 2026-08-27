@@ -1,0 +1,10 @@
+{
+  "id": "profile-card",
+  "name": "Profile Card",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a stylish Profile Card component using CSS Modules. MUST use named export 'export const ProfileCard: React.FC<ProfileCardProps> = ...'. MUST define TypeScript interface 'ProfileCardProps' with ': string' props. MUST include avatar with 'alt=' attribute, explicit 'aria-label', name, role, bio, social media links with Remix Icons, follower stats, and responsive media queries."
+  },
+  "ruleSet": "profile-card"
+}

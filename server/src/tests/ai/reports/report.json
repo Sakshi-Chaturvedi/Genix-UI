@@ -1,6 +1,6 @@
 {
-  "runId": "run-1784902367041-e7c2z",
-  "timestamp": "2026-07-24T14:13:36.194Z",
+  "runId": "run-1787810730293-kmvjc",
+  "timestamp": "2026-08-27T06:11:16.748Z",
   "config": {
     "apiBaseUrl": "http://localhost:5000",
     "provider": "gemini",
@@ -8,15 +8,15 @@
     "delayBetweenTestsMs": 2000
   },
   "summary": {
-    "total": 2,
-    "passed": 2,
+    "total": 7,
+    "passed": 7,
     "failed": 0,
     "passRate": 100,
-    "averageLatencyMs": 23540,
+    "averageLatencyMs": 47744,
     "averageQualityScore": 100,
-    "totalDurationMs": 49153,
-    "totalFallbackCount": 0,
-    "totalRetryCount": 0
+    "totalDurationMs": 346489,
+    "totalFallbackCount": 4,
+    "totalRetryCount": 1
   },
   "results": [
     {
@@ -24,11 +24,11 @@
       "name": "Accordion Component",
       "feature": "generate",
       "passed": true,
-      "latencyMs": 24489,
-      "provider": "gemini",
-      "model": "gemini-2.5-flash",
+      "latencyMs": 59566,
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.1-70b-instruct",
       "promptVersion": "v1.2.0",
-      "filesGenerated": 5,
+      "filesGenerated": 4,
       "validation": {
         "structureValid": true,
         "structureErrors": [],
@@ -44,14 +44,13 @@
           "Does not contain forbidden token: \"Tailwind\"",
           "[a11y] Found: \"aria-expanded\"",
           "[a11y] Found: \"aria-controls\"",
-          "[a11y] Found: \"role=\"",
+          "[a11y] Found: \"role=\"button\"\"",
           "[arch] Found: \"export const Accordion\"",
           "[style] Found: \".module.css\"",
           "[ts] Found: \"interface\"",
           "[ts] Found: \": string\"",
           "[ts] Found: \": boolean\"",
-          "[ts] Found: \": React.ReactNode\"",
-          "[responsive] CSS media queries detected"
+          "[ts] Found: \": React.ReactNode\""
         ],
         "qualityFailed": [],
         "qualityScore": {
@@ -64,17 +63,28 @@
           "percentage": 100
         }
       },
-      "timestamp": "2026-07-24T14:12:47.041Z",
-      "fallbackCount": 0,
+      "timestamp": "2026-08-27T06:05:30.294Z",
+      "fallbackCount": 1,
       "retryCount": 0,
       "providerSequence": [
-        "gemini"
+        "gemini",
+        "openrouter"
       ],
       "attempts": [
         {
           "provider": "gemini",
-          "model": "gemini-2.5-flash",
-          "latencyMs": 24376,
+          "model": "unknown",
+          "latencyMs": 0,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": false,
+          "errorName": "AIProviderError",
+          "errorMessage": "Rate limit exceeded for provider 'gemini'. Please retry after the quota resets."
+        },
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.1-70b-instruct",
+          "latencyMs": 58160,
           "retryCount": 0,
           "timedOut": false,
           "success": true
@@ -82,20 +92,20 @@
       ],
       "pipelineStats": {
         "gemini": {
-          "successRate": 100,
-          "avgLatencyMs": 26840,
-          "totalFailures": 0,
-          "cooldownActivations": 0,
+          "successRate": 20,
+          "avgLatencyMs": 27575,
+          "totalFailures": 4,
+          "cooldownActivations": 4,
           "totalRetries": 0,
-          "totalAttempts": 3
+          "totalAttempts": 5
         },
         "openrouter": {
-          "successRate": 0,
-          "avgLatencyMs": 0,
+          "successRate": 100,
+          "avgLatencyMs": 35191,
           "totalFailures": 0,
           "cooldownActivations": 0,
-          "totalRetries": 0,
-          "totalAttempts": 0
+          "totalRetries": 2,
+          "totalAttempts": 7
         },
         "groq": {
           "successRate": 0,
@@ -120,7 +130,7 @@
       "name": "Animated Button",
       "feature": "generate",
       "passed": true,
-      "latencyMs": 22591,
+      "latencyMs": 27969,
       "provider": "gemini",
       "model": "gemini-2.5-flash",
       "promptVersion": "v1.2.0",
@@ -153,6 +163,302 @@
           "[ts] Found: \": React.FC\"",
           "[ts] Found: \"React.ButtonHTMLAttributes\"",
           "[ts] Found: \": string\"",
+          "[ts] Found: \": boolean\""
+        ],
+        "qualityFailed": [],
+        "qualityScore": {
+          "accessibility": 20,
+          "typing": 20,
+          "architecture": 20,
+          "styling": 20,
+          "responsiveness": 20,
+          "total": 100,
+          "percentage": 100
+        }
+      },
+      "timestamp": "2026-08-27T06:06:31.972Z",
+      "fallbackCount": 0,
+      "retryCount": 0,
+      "providerSequence": [
+        "gemini"
+      ],
+      "attempts": [
+        {
+          "provider": "gemini",
+          "model": "gemini-2.5-flash",
+          "latencyMs": 27868,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": true
+        }
+      ],
+      "pipelineStats": {
+        "gemini": {
+          "successRate": 33,
+          "avgLatencyMs": 27722,
+          "totalFailures": 4,
+          "cooldownActivations": 4,
+          "totalRetries": 0,
+          "totalAttempts": 6
+        },
+        "openrouter": {
+          "successRate": 100,
+          "avgLatencyMs": 35191,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 2,
+          "totalAttempts": 7
+        },
+        "groq": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "openai": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        }
+      }
+    },
+    {
+      "id": "card",
+      "name": "Card Component",
+      "feature": "generate",
+      "passed": true,
+      "latencyMs": 51391,
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.1-70b-instruct",
+      "promptVersion": "v1.2.0",
+      "filesGenerated": 4,
+      "validation": {
+        "structureValid": true,
+        "structureErrors": [],
+        "qualityPassed": [
+          "Contains required token: \"interface\"",
+          "Contains required token: \"export const\"",
+          "Contains required token: \"CardProps\"",
+          "Contains required token: \".module.css\"",
+          "Does not contain forbidden token: \"any\"",
+          "Does not contain forbidden token: \"style={{\"",
+          "Does not contain forbidden token: \"TODO\"",
+          "Does not contain forbidden token: \"Tailwind\"",
+          "Does not contain forbidden token: \"@emotion\"",
+          "[a11y] Found: \"aria-\"",
+          "[a11y] Found: \"role=\"",
+          "[a11y] Found: \"tabIndex\"",
+          "[a11y] Found: \"onKeyDown\"",
+          "[arch] Found: \"export const Card\"",
+          "[style] Found: \".module.css\"",
+          "[ts] Found: \"interface\"",
+          "[ts] Found: \": string\"",
+          "[ts] Found: \": React.ReactNode\""
+        ],
+        "qualityFailed": [],
+        "qualityScore": {
+          "accessibility": 20,
+          "typing": 20,
+          "architecture": 20,
+          "styling": 20,
+          "responsiveness": 20,
+          "total": 100,
+          "percentage": 100
+        }
+      },
+      "timestamp": "2026-08-27T06:07:02.008Z",
+      "fallbackCount": 1,
+      "retryCount": 0,
+      "providerSequence": [
+        "gemini",
+        "openrouter"
+      ],
+      "attempts": [
+        {
+          "provider": "gemini",
+          "model": "unknown",
+          "latencyMs": 0,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": false,
+          "errorName": "AIProviderError",
+          "errorMessage": "Rate limit exceeded for provider 'gemini'. Please retry after the quota resets."
+        },
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.1-70b-instruct",
+          "latencyMs": 50810,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": true
+        }
+      ],
+      "pipelineStats": {
+        "gemini": {
+          "successRate": 29,
+          "avgLatencyMs": 27722,
+          "totalFailures": 5,
+          "cooldownActivations": 5,
+          "totalRetries": 0,
+          "totalAttempts": 7
+        },
+        "openrouter": {
+          "successRate": 100,
+          "avgLatencyMs": 37143,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 2,
+          "totalAttempts": 8
+        },
+        "groq": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "openai": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        }
+      }
+    },
+    {
+      "id": "modal",
+      "name": "Accessible Modal",
+      "feature": "generate",
+      "passed": true,
+      "latencyMs": 38314,
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.1-70b-instruct",
+      "promptVersion": "v1.2.0",
+      "filesGenerated": 4,
+      "validation": {
+        "structureValid": true,
+        "structureErrors": [],
+        "qualityPassed": [
+          "Contains required token: \"interface\"",
+          "Contains required token: \"export const\"",
+          "Contains required token: \".module.css\"",
+          "Contains required token: \"aria-modal\"",
+          "Contains required token: \"role=\"dialog\"\"",
+          "Contains required token: \"onClose\"",
+          "Does not contain forbidden token: \"any\"",
+          "Does not contain forbidden token: \"style={{\"",
+          "Does not contain forbidden token: \"TODO\"",
+          "Does not contain forbidden token: \"Tailwind\"",
+          "[a11y] Found: \"aria-modal\"",
+          "[a11y] Found: \"role=\"dialog\"\"",
+          "[a11y] Found: \"aria-labelledby\"",
+          "[arch] Found: \"export const Modal\"",
+          "[style] Found: \".module.css\"",
+          "[ts] Found: \"interface\"",
+          "[ts] Found: \": boolean\"",
+          "[ts] Found: \": React.ReactNode\""
+        ],
+        "qualityFailed": [],
+        "qualityScore": {
+          "accessibility": 20,
+          "typing": 20,
+          "architecture": 20,
+          "styling": 20,
+          "responsiveness": 20,
+          "total": 100,
+          "percentage": 100
+        }
+      },
+      "timestamp": "2026-08-27T06:07:55.419Z",
+      "fallbackCount": 0,
+      "retryCount": 0,
+      "providerSequence": [
+        "openrouter"
+      ],
+      "attempts": [
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.1-70b-instruct",
+          "latencyMs": 38228,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": true
+        }
+      ],
+      "pipelineStats": {
+        "gemini": {
+          "successRate": 29,
+          "avgLatencyMs": 27722,
+          "totalFailures": 5,
+          "cooldownActivations": 5,
+          "totalRetries": 0,
+          "totalAttempts": 7
+        },
+        "openrouter": {
+          "successRate": 100,
+          "avgLatencyMs": 37264,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 2,
+          "totalAttempts": 9
+        },
+        "groq": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "openai": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        }
+      }
+    },
+    {
+      "id": "navbar",
+      "name": "Responsive Navbar",
+      "feature": "generate",
+      "passed": true,
+      "latencyMs": 44563,
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.1-70b-instruct",
+      "promptVersion": "v1.2.0",
+      "filesGenerated": 4,
+      "validation": {
+        "structureValid": true,
+        "structureErrors": [],
+        "qualityPassed": [
+          "Contains required token: \"interface\"",
+          "Contains required token: \"export const\"",
+          "Contains required token: \".module.css\"",
+          "Contains required token: \"nav\"",
+          "Contains required token: \"aria-label\"",
+          "Does not contain forbidden token: \"any\"",
+          "Does not contain forbidden token: \"style={{\"",
+          "Does not contain forbidden token: \"TODO\"",
+          "Does not contain forbidden token: \"Tailwind\"",
+          "[a11y] Found: \"aria-label\"",
+          "[a11y] Found: \"role=\"",
+          "[a11y] Found: \"tabIndex\"",
+          "[a11y] Found: \"aria-expanded\"",
+          "[arch] Found: \"export const Navbar\"",
+          "[style] Found: \".module.css\"",
+          "[ts] Found: \"interface\"",
+          "[ts] Found: \": string\"",
           "[ts] Found: \": boolean\"",
           "[responsive] CSS media queries detected"
         ],
@@ -167,17 +473,28 @@
           "percentage": 100
         }
       },
-      "timestamp": "2026-07-24T14:13:13.586Z",
-      "fallbackCount": 0,
+      "timestamp": "2026-08-27T06:08:35.758Z",
+      "fallbackCount": 1,
       "retryCount": 0,
       "providerSequence": [
-        "gemini"
+        "gemini",
+        "openrouter"
       ],
       "attempts": [
         {
           "provider": "gemini",
-          "model": "gemini-2.5-flash",
-          "latencyMs": 22552,
+          "model": "unknown",
+          "latencyMs": 0,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": false,
+          "errorName": "AIProviderError",
+          "errorMessage": "Rate limit exceeded for provider 'gemini'. Please retry after the quota resets."
+        },
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.1-70b-instruct",
+          "latencyMs": 43825,
           "retryCount": 0,
           "timedOut": false,
           "success": true
@@ -185,20 +502,220 @@
       ],
       "pipelineStats": {
         "gemini": {
-          "successRate": 100,
-          "avgLatencyMs": 25768,
-          "totalFailures": 0,
-          "cooldownActivations": 0,
+          "successRate": 25,
+          "avgLatencyMs": 27722,
+          "totalFailures": 6,
+          "cooldownActivations": 6,
           "totalRetries": 0,
-          "totalAttempts": 4
+          "totalAttempts": 8
         },
         "openrouter": {
+          "successRate": 100,
+          "avgLatencyMs": 37920,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 2,
+          "totalAttempts": 10
+        },
+        "groq": {
           "successRate": 0,
           "avgLatencyMs": 0,
           "totalFailures": 0,
           "cooldownActivations": 0,
           "totalRetries": 0,
           "totalAttempts": 0
+        },
+        "openai": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        }
+      }
+    },
+    {
+      "id": "profile-card",
+      "name": "Profile Card",
+      "feature": "generate",
+      "passed": true,
+      "latencyMs": 66802,
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.1-70b-instruct",
+      "promptVersion": "v1.2.0",
+      "filesGenerated": 4,
+      "validation": {
+        "structureValid": true,
+        "structureErrors": [],
+        "qualityPassed": [
+          "Contains required token: \"interface\"",
+          "Contains required token: \"export const\"",
+          "Contains required token: \".module.css\"",
+          "Does not contain forbidden token: \"any\"",
+          "Does not contain forbidden token: \"style={{\"",
+          "Does not contain forbidden token: \"TODO\"",
+          "Does not contain forbidden token: \"Tailwind\"",
+          "[a11y] Found: \"aria-label\"",
+          "[a11y] Found: \"alt=\"",
+          "[arch] Found: \"export const ProfileCard\"",
+          "[style] Found: \".module.css\"",
+          "[ts] Found: \"interface\"",
+          "[ts] Found: \": string\"",
+          "[responsive] CSS media queries detected"
+        ],
+        "qualityFailed": [],
+        "qualityScore": {
+          "accessibility": 20,
+          "typing": 20,
+          "architecture": 20,
+          "styling": 20,
+          "responsiveness": 20,
+          "total": 100,
+          "percentage": 100
+        }
+      },
+      "timestamp": "2026-08-27T06:09:22.327Z",
+      "fallbackCount": 0,
+      "retryCount": 0,
+      "providerSequence": [
+        "openrouter"
+      ],
+      "attempts": [
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.1-70b-instruct",
+          "latencyMs": 66663,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": true
+        }
+      ],
+      "pipelineStats": {
+        "gemini": {
+          "successRate": 25,
+          "avgLatencyMs": 27722,
+          "totalFailures": 6,
+          "cooldownActivations": 6,
+          "totalRetries": 0,
+          "totalAttempts": 8
+        },
+        "openrouter": {
+          "successRate": 100,
+          "avgLatencyMs": 40533,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 2,
+          "totalAttempts": 11
+        },
+        "groq": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        },
+        "openai": {
+          "successRate": 0,
+          "avgLatencyMs": 0,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 0,
+          "totalAttempts": 0
+        }
+      }
+    },
+    {
+      "id": "tabs",
+      "name": "Accessible Tabs",
+      "feature": "generate",
+      "passed": true,
+      "latencyMs": 45601,
+      "provider": "openrouter",
+      "model": "meta-llama/llama-3.1-70b-instruct",
+      "promptVersion": "v1.2.0",
+      "filesGenerated": 3,
+      "validation": {
+        "structureValid": true,
+        "structureErrors": [],
+        "qualityPassed": [
+          "Contains required token: \"interface\"",
+          "Contains required token: \"export const\"",
+          "Contains required token: \".module.css\"",
+          "Contains required token: \"role=\"tablist\"\"",
+          "Contains required token: \"role=\"tab\"\"",
+          "Contains required token: \"aria-selected\"",
+          "Does not contain forbidden token: \"any\"",
+          "Does not contain forbidden token: \"style={{\"",
+          "Does not contain forbidden token: \"TODO\"",
+          "Does not contain forbidden token: \"Tailwind\"",
+          "[a11y] Found: \"role=\"tablist\"\"",
+          "[a11y] Found: \"role=\"tab\"\"",
+          "[a11y] Found: \"aria-selected\"",
+          "[a11y] Found: \"aria-controls\"",
+          "[a11y] Found: \"tabIndex\"",
+          "[arch] Found: \"export const Tabs\"",
+          "[style] Found: \".module.css\"",
+          "[ts] Found: \"interface\"",
+          "[ts] Found: \": string\"",
+          "[ts] Found: \": boolean\"",
+          "[ts] Found: \": React.ReactNode\""
+        ],
+        "qualityFailed": [],
+        "qualityScore": {
+          "accessibility": 20,
+          "typing": 20,
+          "architecture": 20,
+          "styling": 20,
+          "responsiveness": 20,
+          "total": 100,
+          "percentage": 100
+        }
+      },
+      "timestamp": "2026-08-27T06:10:31.137Z",
+      "fallbackCount": 1,
+      "retryCount": 1,
+      "providerSequence": [
+        "gemini",
+        "openrouter"
+      ],
+      "attempts": [
+        {
+          "provider": "gemini",
+          "model": "unknown",
+          "latencyMs": 0,
+          "retryCount": 0,
+          "timedOut": false,
+          "success": false,
+          "errorName": "AIProviderError",
+          "errorMessage": "Rate limit exceeded for provider 'gemini'. Please retry after the quota resets."
+        },
+        {
+          "provider": "openrouter",
+          "model": "meta-llama/llama-3.1-70b-instruct",
+          "latencyMs": 30574,
+          "retryCount": 1,
+          "timedOut": false,
+          "success": true
+        }
+      ],
+      "pipelineStats": {
+        "gemini": {
+          "successRate": 22,
+          "avgLatencyMs": 27722,
+          "totalFailures": 7,
+          "cooldownActivations": 7,
+          "totalRetries": 0,
+          "totalAttempts": 9
+        },
+        "openrouter": {
+          "successRate": 100,
+          "avgLatencyMs": 39703,
+          "totalFailures": 0,
+          "cooldownActivations": 0,
+          "totalRetries": 3,
+          "totalAttempts": 12
         },
         "groq": {
           "successRate": 0,

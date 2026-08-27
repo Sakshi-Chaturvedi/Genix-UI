@@ -1,0 +1,10 @@
+{
+  "id": "card",
+  "name": "Card Component",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a versatile Card component using CSS Modules (.module.css) and semantic HTML (<article>, <header>, <footer>). MUST use named export 'export const Card: React.FC<CardProps> = ...'. MUST define TypeScript interface 'CardProps' containing ': string' (title: string;) and ': React.ReactNode' (children: React.ReactNode;) props. The root <article> element MUST include an explicit role=\"region\" attribute and an aria-label attribute. MUST include keyboard accessibility with tabIndex={0} and an onKeyDown handler on the root element. MUST NOT use inline styles such as style={{...}}. MUST NOT use Tailwind. Include image, subtitle, hover elevation, optional badge, and loading skeleton state."
+  },
+  "ruleSet": "card"
+}

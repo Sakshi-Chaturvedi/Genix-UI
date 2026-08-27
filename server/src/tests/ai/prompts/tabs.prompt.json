@@ -1,0 +1,10 @@
+{
+  "id": "tabs",
+  "name": "Accessible Tabs",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create an accessible Tabs component using CSS Modules (.module.css). MUST use named export 'export const Tabs = ...'. MUST define a TypeScript 'interface' explicitly declaring ': string' for tab IDs, ': React.ReactNode' for tab content, and explicitly include 'isDisabled?: boolean' for individual tab states. MUST support active tab handling. MUST include 'role=\"tablist\"' on the container, and 'role=\"tab\"', 'aria-selected', 'aria-controls', and 'tabIndex' on the individual tab buttons for keyboard navigation. MUST NOT use 'any' or inline styles. MUST include responsive styling."
+  },
+  "ruleSet": "tabs"
+}

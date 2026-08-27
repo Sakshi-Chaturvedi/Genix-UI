@@ -1,0 +1,10 @@
+{
+  "id": "navbar",
+  "name": "Responsive Navbar",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create a responsive Navbar component using CSS Modules (.module.css). MUST use named export 'export const Navbar = ...'. MUST define a TypeScript 'interface' explicitly declaring ': string' for logo or title props and ': boolean' for menu states. MUST use a semantic '<nav>' element. MUST include 'aria-label' and 'role=\"navigation\"' on the root nav element. MUST support keyboard accessibility using 'tabIndex' and 'aria-expanded' for the mobile menu toggle. MUST include '@media' queries for responsive navigation and mobile menu behavior. MUST NOT use 'any' or inline 'style={{...}}' or Tailwind. Support navigation links and Remix Icons if appropriate."
+  },
+  "ruleSet": "navbar"
+}

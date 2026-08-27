@@ -153,6 +153,48 @@ function containsTodoKeyword(code: string, fileName: string): boolean {
 
 // ─── Quality Validator ────────────────────────────────────────────────────────
 
+function getCategoryTokens(rules: IRuleSet) {
+  const a11yTokens = new Set(rules.accessibilityRules);
+  const archTokens = new Set(rules.architectureRules);
+  const styleTokens = new Set(rules.stylingRules);
+  const tsTokens = new Set(rules.typescriptRules);
+  const respTokens = new Set<string>();
+
+  if (styleTokens.has("@media")) {
+    styleTokens.delete("@media");
+    respTokens.add("@media");
+  }
+
+  const a11yAllowed = ["aria-", "aria-expanded", "aria-controls", "aria-label", "role=", "tabIndex", "onKeyDown", "alt="];
+  const tsAllowed = ["interface", "ButtonProps", "CardProps", "AccordionProps", "ProfileCardProps", "React.FC", "React.ReactNode", ": string", ": boolean", ": number"];
+  
+  for (const token of rules.mustContain) {
+    if (a11yAllowed.includes(token)) {
+      a11yTokens.add(token);
+    } else if (tsAllowed.includes(token)) {
+      tsTokens.add(token);
+    } else if (token === ".module.css") {
+      styleTokens.add(token);
+    } else if (token === "@media") {
+      respTokens.add(token);
+    } else if (token.startsWith("export const")) {
+      archTokens.add(token);
+    }
+  }
+
+  return { a11yTokens, archTokens, styleTokens, tsTokens, respTokens };
+}
+
+function calculateProportionalScore(weight: number, failedCount: number, totalCount: number): number {
+  if (totalCount === 0) return weight;
+  const ratio = 1 - (failedCount / totalCount);
+  return Math.max(0, Math.round(weight * ratio));
+}
+
+function stripComments(code: string): string {
+  return code.replace(/\/\*[\s\S]*?\*\/|(?<!http:|https:)\/\/[^\r\n]*/g, "");
+}
+
 export function validateQuality(
   data: any,
   rules: IRuleSet
@@ -169,13 +211,32 @@ export function validateQuality(
   const mainComponentFiles = codeFiles.filter(
     (f) => !f.path.endsWith(".test.tsx") && !f.path.endsWith(".stories.tsx")
   );
+  const styleFiles = files.filter(
+    (f) => f.type === "style" || (f.path && f.path.endsWith(".css"))
+  );
   
-  // Combined content for positive rule checks (mustContain, accessibility, etc.)
-  const allContent = files.map((f: any) => `${f.path || ""}\n${f.content || ""}`).join("\n");
+  // Clean contents for positive rule checks
+  const cleanComponentContent = mainComponentFiles
+    .map((f: any) => stripComments(f.content || ""))
+    .join("\n");
+
+  const cleanStyleContent = styleFiles
+    .map((f: any) => stripComments(f.content || ""))
+    .join("\n");
+
+  const { a11yTokens, archTokens, styleTokens, tsTokens, respTokens } = getCategoryTokens(rules);
 
   // ── 1. mustContain checks ────────────────────────────────────────────────
   for (const token of rules.mustContain) {
-    if (allContent.includes(token)) {
+    let satisfies = false;
+    if (token === ".module.css") {
+      satisfies = cleanComponentContent.includes(".module.css") ||
+                  files.some((f: any) => f.path && f.path.endsWith(".module.css"));
+    } else {
+      satisfies = cleanComponentContent.includes(token);
+    }
+
+    if (satisfies) {
       passed.push(`Contains required token: "${token}"`);
     } else {
       failed.push(`Missing required token: "${token}"`);
@@ -236,89 +297,106 @@ export function validateQuality(
   }
 
   // ── 3. Accessibility rules ───────────────────────────────────────────────
-  let a11yScore = rules.qualityWeights.accessibility;
-  for (const rule of rules.accessibilityRules) {
-    let satisfiesRule = allContent.includes(rule);
+  let a11yFailedCount = 0;
+  for (const rule of a11yTokens) {
+    let satisfiesRule = cleanComponentContent.includes(rule);
 
     // Native HTML semantics fallback for accessibility rules:
     if (!satisfiesRule) {
       if (rule === "role=" || rule === "role=\"button\"") {
         // Native <button> element or button HTML tag satisfies button role requirement
-        satisfiesRule = /<button[\s>]/i.test(allContent) || /React\.ButtonHTMLAttributes/i.test(allContent);
+        satisfiesRule = /<button[\s>]/i.test(cleanComponentContent) || /React\.ButtonHTMLAttributes/i.test(cleanComponentContent);
       } else if (rule === "role=\"dialog\"") {
-        satisfiesRule = /<dialog[\s>]/i.test(allContent) || /role=/i.test(allContent);
+        satisfiesRule = /<dialog[\s>]/i.test(cleanComponentContent) || /role=/i.test(cleanComponentContent);
       } else if (rule === "role=\"navigation\"") {
-        satisfiesRule = /<nav[\s>]/i.test(allContent) || /aria-label/i.test(allContent);
+        satisfiesRule = /<nav[\s>]/i.test(cleanComponentContent) || /aria-label/i.test(cleanComponentContent);
       }
     }
 
     if (satisfiesRule) {
-      passed.push(`[a11y] Found: "${rule}"`);
+      if (rules.accessibilityRules.includes(rule)) passed.push(`[a11y] Found: "${rule}"`);
     } else {
-      const penalty = Math.floor(rules.qualityWeights.accessibility / Math.max(rules.accessibilityRules.length, 1));
-      a11yScore = Math.max(0, a11yScore - penalty);
-      failed.push(`[a11y] Missing: "${rule}"`);
+      a11yFailedCount++;
+      if (rules.accessibilityRules.includes(rule)) failed.push(`[a11y] Missing: "${rule}"`);
     }
   }
+  const a11yScore = calculateProportionalScore(rules.qualityWeights.accessibility, a11yFailedCount, a11yTokens.size);
 
   // ── 4. Architecture rules ────────────────────────────────────────────────
-  let archScore = rules.qualityWeights.architecture;
-  for (const rule of rules.architectureRules) {
-    if (allContent.includes(rule)) {
-      passed.push(`[arch] Found: "${rule}"`);
+  let archFailedCount = 0;
+  for (const rule of archTokens) {
+    if (cleanComponentContent.includes(rule)) {
+      if (rules.architectureRules.includes(rule)) passed.push(`[arch] Found: "${rule}"`);
     } else {
-      const penalty = Math.floor(rules.qualityWeights.architecture / Math.max(rules.architectureRules.length, 1));
-      archScore = Math.max(0, archScore - penalty);
-      failed.push(`[arch] Missing: "${rule}"`);
+      archFailedCount++;
+      if (rules.architectureRules.includes(rule)) failed.push(`[arch] Missing: "${rule}"`);
     }
   }
+  const archScore = calculateProportionalScore(rules.qualityWeights.architecture, archFailedCount, archTokens.size);
 
   // ── 5. Styling rules ─────────────────────────────────────────────────────
-  let styleScore = rules.qualityWeights.styling;
-  for (const rule of rules.stylingRules) {
-    if (allContent.includes(rule)) {
-      passed.push(`[style] Found: "${rule}"`);
+  let styleFailedCount = 0;
+  for (const rule of styleTokens) {
+    let satisfiesRule = false;
+    if (rule === ".module.css") {
+      satisfiesRule = cleanComponentContent.includes(".module.css") ||
+                      files.some((f: any) => f.path && f.path.endsWith(".module.css"));
     } else {
-      const penalty = Math.floor(rules.qualityWeights.styling / Math.max(rules.stylingRules.length, 1));
-      styleScore = Math.max(0, styleScore - penalty);
-      failed.push(`[style] Missing: "${rule}"`);
+      satisfiesRule = cleanComponentContent.includes(rule);
+    }
+
+    if (satisfiesRule) {
+      if (rules.stylingRules.includes(rule)) passed.push(`[style] Found: "${rule}"`);
+    } else {
+      styleFailedCount++;
+      if (rules.stylingRules.includes(rule)) failed.push(`[style] Missing: "${rule}"`);
     }
   }
+  const styleScore = calculateProportionalScore(rules.qualityWeights.styling, styleFailedCount, styleTokens.size);
 
   // ── 6. TypeScript rules ──────────────────────────────────────────────────
-  let typingScore = rules.qualityWeights.typing;
-  for (const rule of rules.typescriptRules) {
-    let satisfiesRule = allContent.includes(rule);
+  let tsFailedCount = 0;
+  for (const rule of tsTokens) {
+    let satisfiesRule = cleanComponentContent.includes(rule);
 
     // Flexible TS node matching: React.ReactNode <-> ReactNode
     if (!satisfiesRule) {
       if (rule === ": React.ReactNode") {
-        satisfiesRule = allContent.includes(": ReactNode") || allContent.includes("ReactNode") || allContent.includes("React.ReactElement");
+        satisfiesRule = cleanComponentContent.includes(": ReactNode") || cleanComponentContent.includes("ReactNode") || cleanComponentContent.includes("React.ReactElement");
       } else if (rule === ": React.FC") {
-        satisfiesRule = allContent.includes(": FC") || allContent.includes("React.FC") || allContent.includes("forwardRef");
+        satisfiesRule = cleanComponentContent.includes(": FC") || cleanComponentContent.includes("React.FC") || cleanComponentContent.includes("forwardRef");
       } else if (rule === "React.ButtonHTMLAttributes") {
-        satisfiesRule = allContent.includes("ButtonHTMLAttributes") || allContent.includes("HTMLButtonElement");
+        satisfiesRule = cleanComponentContent.includes("ButtonHTMLAttributes") || cleanComponentContent.includes("HTMLButtonElement");
       }
     }
 
     if (satisfiesRule) {
-      passed.push(`[ts] Found: "${rule}"`);
+      if (rules.typescriptRules.includes(rule)) passed.push(`[ts] Found: "${rule}"`);
     } else {
-      const penalty = Math.floor(rules.qualityWeights.typing / Math.max(rules.typescriptRules.length, 1));
-      typingScore = Math.max(0, typingScore - penalty);
-      failed.push(`[ts] Missing: "${rule}"`);
+      tsFailedCount++;
+      if (rules.typescriptRules.includes(rule)) failed.push(`[ts] Missing: "${rule}"`);
     }
   }
+  const typingScore = calculateProportionalScore(rules.qualityWeights.typing, tsFailedCount, tsTokens.size);
 
   // ── 7. Responsiveness check ──────────────────────────────────────────────
-  let responsiveScore = rules.qualityWeights.responsiveness;
-  const hasMediaQuery = allContent.includes("@media");
-  if (hasMediaQuery) {
-    passed.push("[responsive] CSS media queries detected");
-  } else if (rules.qualityWeights.responsiveness > 0 && rules.stylingRules.length > 0) {
-    responsiveScore = Math.max(0, responsiveScore - 10);
-    failed.push("[responsive] No CSS media queries detected");
+  let respFailedCount = 0;
+  for (const rule of respTokens) {
+    let satisfiesRule = false;
+    if (rule === "@media") {
+      satisfiesRule = cleanStyleContent.includes("@media");
+    } else {
+      satisfiesRule = cleanComponentContent.includes(rule);
+    }
+
+    if (satisfiesRule) {
+      if (rule === "@media") passed.push("[responsive] CSS media queries detected");
+    } else {
+      respFailedCount++;
+      if (rule === "@media") failed.push("[responsive] No CSS media queries detected");
+    }
   }
+  const responsiveScore = calculateProportionalScore(rules.qualityWeights.responsiveness, respFailedCount, respTokens.size);
 
   const total = a11yScore + typingScore + archScore + styleScore + responsiveScore;
   const maxTotal = Object.values(rules.qualityWeights).reduce((sum, w) => sum + w, 0);

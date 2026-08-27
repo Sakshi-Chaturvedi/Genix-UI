@@ -8,7 +8,9 @@
     "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test:ai": "tsx src/tests/ai/runner/index.ts"
+    "test:ai": "tsx src/tests/ai/runner/index.ts",
+    "test:ai:negative": "tsx src/tests/ai/negative/runner.ts",
+    "test:ai:scoring": "tsx src/tests/ai/scoring/runner.ts"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

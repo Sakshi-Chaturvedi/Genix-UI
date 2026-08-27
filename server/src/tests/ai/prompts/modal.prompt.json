@@ -1,0 +1,10 @@
+{
+  "id": "modal",
+  "name": "Accessible Modal",
+  "feature": "generate",
+  "endpoint": "/api/ai/generate",
+  "body": {
+    "prompt": "Create an accessible Modal component using CSS Modules (.module.css). MUST use named export 'export const Modal = ...'. MUST define a TypeScript 'interface' explicitly declaring 'isOpen?: boolean', 'children?: React.ReactNode', and an 'onClose' callback function. MUST use semantic dialog structure. MUST include 'aria-modal={true}', exact 'role=\"dialog\"', and 'aria-labelledby' on the modal container. MUST handle keyboard accessibility including Escape handling and focus management, utilizing 'tabIndex'. MUST NOT use 'any' or inline 'style={{...}}'. MUST include responsive styling."
+  },
+  "ruleSet": "modal"
+}

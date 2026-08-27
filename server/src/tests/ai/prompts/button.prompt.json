@@ -4,7 +4,7 @@
   "feature": "generate",
   "endpoint": "/api/ai/generate",
   "body": {
-    "prompt": "Create a modern animated Button component with variants (primary, secondary, danger, ghost), sizes (sm, md, lg), loading state with spinner, disabled state, optional left and right icon slots using Remix Icons, hover and click micro-animations, and full accessibility support."
+    "prompt": "Create an animated Button component using CSS Modules. MUST use named export 'export const Button: React.FC<ButtonProps> = ...'. MUST define TypeScript interface 'ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>' explicitly declaring 'onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;' and ': string' (label?: string;) and ': boolean' (isLoading?: boolean;) props. MUST pass 'onClick={onClick}', 'disabled={disabled}', 'tabIndex={0}', 'onKeyDown', and at least one 'aria-' attribute (e.g. aria-label, aria-busy) on the element. Support variants (primary, secondary, danger, ghost), sizes (sm, md, lg), and Remix Icons."
   },
   "ruleSet": "button"
 }

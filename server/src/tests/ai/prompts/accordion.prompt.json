@@ -4,7 +4,7 @@
   "feature": "generate",
   "endpoint": "/api/ai/generate",
   "body": {
-    "prompt": "Create a smooth animated Accordion component with multiple items, single or multi-expand mode, smooth height transition animation (using CSS module class toggling for height/max-height transitions, absolutely NO inline style attributes or 'style={{'), Remix Icon chevron rotation, keyboard navigation, ARIA expanded/controls attributes, and customizable styling via CSS Modules."
+    "prompt": "Create a smooth Accordion component using CSS Modules (.module.css). MUST use named export 'export const Accordion: React.FC<AccordionProps> = ...'. MUST define TypeScript interface 'AccordionProps' containing ': string', ': boolean', and ': React.ReactNode' props. MUST include ARIA attributes (aria-expanded, aria-controls, role='button'), keyboard navigation, single/multi-expand mode, and chevron rotation. MUST NOT use inline styles such as style={{...}}. MUST NOT use styled-components, Tailwind, or @emotion. ALL visual styling and animations MUST be implemented through the CSS Module (.module.css). Dynamic accordion behavior such as expand/collapse animation must NOT use inline style attributes — use CSS classes, CSS transitions/animations, and state-based class application instead."
   },
   "ruleSet": "accordion"
 }

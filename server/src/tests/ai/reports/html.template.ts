@@ -23,8 +23,11 @@ function fallbackBadge(count: number): string {
 }
 
 function resultRow(r: ITestResult): string {
-  const failReasons = r.validation.structureErrors
-    .concat(r.validation.qualityFailed)
+  const failList = r.validation.structureErrors.concat(r.validation.qualityFailed);
+  if (failList.length === 0 && r.failureReason) {
+    failList.push(r.failureReason);
+  }
+  const failReasons = failList
     .slice(0, 5)
     .map(f => `<li>${escHtml(f)}</li>`)
     .join("");
@@ -148,13 +151,13 @@ export function generateHtmlReport(report: ITestReport): string {
 
   <div class="grid">
     <div class="stat"><div class="stat-label">Pass Rate</div><div class="stat-value" style="color:${passColor}">${summary.passRate}%</div></div>
-    <div class="stat"><div class="stat-label">Passed</div><div class="stat-value green">${summary.passed}</div></div>
-    <div class="stat"><div class="stat-label">Failed</div><div class="stat-value red">${summary.failed}</div></div>
+    <div class="stat"><div class="stat-label">Passed / Failed</div><div class="stat-value green">${summary.passed} <span style="font-size:1rem;color:#64748b;">/</span> <span class="red">${summary.failed}</span></div></div>
     <div class="stat"><div class="stat-label">Total Tests</div><div class="stat-value blue">${summary.total}</div></div>
-    <div class="stat"><div class="stat-label">Avg Latency</div><div class="stat-value yellow">${summary.averageLatencyMs.toLocaleString()} ms</div></div>
     <div class="stat"><div class="stat-label">Avg Quality</div><div class="stat-value" style="color:${passColor}">${summary.averageQualityScore}%</div></div>
-    <div class="stat"><div class="stat-label">Total Fallbacks</div><div class="stat-value ${summary.totalFallbackCount > 0 ? "yellow" : "green"}">${summary.totalFallbackCount}</div></div>
-    <div class="stat"><div class="stat-label">Total Retries</div><div class="stat-value purple">${summary.totalRetryCount}</div></div>
+    <div class="stat"><div class="stat-label">Avg Latency</div><div class="stat-value yellow">${summary.averageLatencyMs.toLocaleString()} ms</div></div>
+    <div class="stat"><div class="stat-label">P50 / P95 / P99</div><div class="stat-value blue" style="font-size:1.1rem;line-height:1.6;">${summary.p50LatencyMs || 0} / ${summary.p95LatencyMs || 0} / ${summary.p99LatencyMs || 0} ms</div></div>
+    <div class="stat"><div class="stat-label">Fallbacks (Rate)</div><div class="stat-value ${summary.totalFallbackCount > 0 ? "yellow" : "green"}">${summary.totalFallbackCount} <span style="font-size:0.9rem;color:#94a3b8;">(${summary.fallbackRate ?? 0}%)</span></div></div>
+    <div class="stat"><div class="stat-label">Retries (Rate)</div><div class="stat-value purple">${summary.totalRetryCount} <span style="font-size:0.9rem;color:#94a3b8;">(${summary.retryRate ?? 0}%)</span></div></div>
     <div class="stat"><div class="stat-label">Total Duration</div><div class="stat-value blue">${(summary.totalDurationMs / 1000).toFixed(1)} s</div></div>
   </div>
 

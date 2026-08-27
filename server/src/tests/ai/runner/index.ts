@@ -5,6 +5,8 @@ import { IPromptCase, ITestResult, ITestReport, ITestSummary } from "../types/te
 import { runSingleTest } from "./test.runner.js";
 import { saveReports } from "../reports/report.generator.js";
 import testConfig from "../config/test.config.js";
+import { p50, p95, p99 } from "../performance/metrics.js";
+import { evaluateQualityGate } from "../gates/quality.gate.js";
 
 // ─── Bootstrap ────────────────────────────────────────────────────────────────
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
@@ -132,6 +134,36 @@ async function main(): Promise<void> {
   const totalFallbackCount = results.reduce((s, r) => s + (r.fallbackCount ?? 0), 0);
   const totalRetryCount = results.reduce((s, r) => s + (r.retryCount ?? 0), 0);
 
+  const latencySamples = results.map(r => r.latencyMs);
+
+  // ── Provider distribution: which final-answering provider served each test ──
+  const providerDistribution: Record<string, number> = {};
+  for (const r of results) {
+    const p = r.provider ?? "unknown";
+    providerDistribution[p] = (providerDistribution[p] ?? 0) + 1;
+  }
+
+  // ── Failure distribution: count which categories caused failures ──────────
+  const failureDistribution: Record<string, number> = {};
+  for (const r of results.filter(r => !r.passed)) {
+    if (r.validation.structureErrors.length > 0) {
+      failureDistribution["structure"] = (failureDistribution["structure"] ?? 0) + 1;
+    }
+    // Categorise qualityFailed entries by their bracket prefix ([a11y], [ts], [arch], [style], [responsive])
+    for (const f of r.validation.qualityFailed) {
+      if      (f.startsWith("[a11y]"))       failureDistribution["accessibility"] = (failureDistribution["accessibility"] ?? 0) + 1;
+      else if (f.startsWith("[ts]"))         failureDistribution["typing"]        = (failureDistribution["typing"]        ?? 0) + 1;
+      else if (f.startsWith("[arch]"))       failureDistribution["architecture"]  = (failureDistribution["architecture"]  ?? 0) + 1;
+      else if (f.startsWith("[style]"))      failureDistribution["styling"]       = (failureDistribution["styling"]       ?? 0) + 1;
+      else if (f.startsWith("[responsive]")) failureDistribution["responsiveness"]= (failureDistribution["responsiveness"]?? 0) + 1;
+      else                                   failureDistribution["other"]          = (failureDistribution["other"]          ?? 0) + 1;
+    }
+    // If the test failed purely due to a provider error (no quality failures), tag as "provider"
+    if (r.validation.qualityFailed.length === 0 && r.validation.structureErrors.length === 0 && r.failureReason) {
+      failureDistribution["provider"] = (failureDistribution["provider"] ?? 0) + 1;
+    }
+  }
+
   const summary: ITestSummary = {
     total: results.length,
     passed,
@@ -142,6 +174,13 @@ async function main(): Promise<void> {
     totalDurationMs,
     totalFallbackCount,
     totalRetryCount,
+    p50LatencyMs: p50(latencySamples),
+    p95LatencyMs: p95(latencySamples),
+    p99LatencyMs: p99(latencySamples),
+    fallbackRate: results.length > 0 ? Number(((results.filter(r => (r.fallbackCount ?? 0) > 0).length / results.length) * 100).toFixed(1)) : 0,
+    retryRate:    results.length > 0 ? Number(((results.filter(r => (r.retryCount    ?? 0) > 0).length / results.length) * 100).toFixed(1)) : 0,
+    providerDistribution,
+    failureDistribution,
   };
 
   const report: ITestReport = {
@@ -160,6 +199,9 @@ async function main(): Promise<void> {
   // ── Save reports ──────────────────────────────────────────────────────────
   const { jsonPath, htmlPath } = saveReports(report, testConfig.outputDir);
 
+  // ── Evaluate Quality Gate ──────────────────────────────────────────────────
+  const gateResult = evaluateQualityGate(summary);
+
   // ── Print summary banner ──────────────────────────────────────────────────
   const rateColor = passRate >= 80 ? "\x1b[32m" : passRate >= 60 ? "\x1b[33m" : "\x1b[31m";
   console.log("\n\x1b[90m  ─────────────────────────────────────────────────────\x1b[0m");
@@ -167,6 +209,7 @@ async function main(): Promise<void> {
   console.log(`  Pass Rate        : ${rateColor}${passRate}%\x1b[0m   (${passed} passed / ${failed} failed / ${total} total)`);
   console.log(`  Avg Latency      : \x1b[33m${averageLatencyMs.toLocaleString()} ms\x1b[0m`);
   console.log(`  Avg Quality      : \x1b[36m${averageQualityScore}%\x1b[0m`);
+  console.log(`  P50/P95/P99      : \x1b[34m${summary.p50LatencyMs}/${summary.p95LatencyMs}/${summary.p99LatencyMs} ms\x1b[0m`);
   console.log(`  Total Duration   : \x1b[90m${(totalDurationMs / 1000).toFixed(1)}s\x1b[0m`);
   console.log(`  Total Fallbacks  : ${totalFallbackCount > 0 ? `\x1b[33m${totalFallbackCount}\x1b[0m` : `\x1b[32m${totalFallbackCount}\x1b[0m`}`);
   console.log(`  Total Retries    : ${totalRetryCount > 0 ? `\x1b[33m${totalRetryCount}\x1b[0m` : `\x1b[32m${totalRetryCount}\x1b[0m`}`);
@@ -175,13 +218,18 @@ async function main(): Promise<void> {
   console.log(`  \x1b[32m✓ HTML Report  :\x1b[0m ${htmlPath}`);
   console.log();
 
-  // Exit with failure code if any tests failed (enables CI/CD gates)
-  if (failed > 0) {
-    console.log(`\x1b[31m  ✗ ${failed} test(s) failed. Regression detected.\x1b[0m\n`);
-    process.exit(1);
-  } else {
-    console.log(`\x1b[32m  ✓ All tests passed. No regressions detected.\x1b[0m\n`);
+  // ── Print Quality Gate Evaluation ──────────────────────────────────────────
+  console.log("\x1b[90m  ─────────────────────────────────────────────────────\x1b[0m");
+  if (gateResult.passed) {
+    console.log(`\x1b[32m\x1b[1m  ✓ QUALITY GATE PASSED:\x1b[0m All metrics meet configured thresholds.\n`);
     process.exit(0);
+  } else {
+    console.log(`\x1b[31m\x1b[1m  ✗ QUALITY GATE FAILED:\x1b[0m ${gateResult.violations.length} threshold violation(s) detected.\n`);
+    for (const v of gateResult.violations) {
+      console.log(`    • \x1b[31m[${v.rule}]\x1b[0m ${v.message} (Expected ${v.expected}, Actual ${v.actual})`);
+    }
+    console.log();
+    process.exit(1);
   }
 }
 

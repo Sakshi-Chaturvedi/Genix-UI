@@ -11,7 +11,8 @@
     "test:ai": "tsx src/tests/ai/runner/index.ts",
     "test:ai:negative": "tsx src/tests/ai/negative/runner.ts",
     "test:ai:scoring": "tsx src/tests/ai/scoring/runner.ts",
-    "test:ai:performance": "tsx src/tests/ai/performance/runner.ts"
+    "test:ai:performance": "tsx src/tests/ai/performance/runner.ts",
+    "test:ai:gate": "tsx src/tests/ai/gates/runner.ts"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

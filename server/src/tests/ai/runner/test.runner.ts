@@ -46,6 +46,7 @@ export async function runSingleTest(testCase: IPromptCase): Promise<ITestResult>
       fallbackCount: 0,
       retryCount: 0,
       providerSequence: [],
+      failureReason: `HTTP client error: ${err.message}`,
     };
   }
 
@@ -64,6 +65,24 @@ export async function runSingleTest(testCase: IPromptCase): Promise<ITestResult>
   };
 
   const passed = validation.structureValid && qualityCheck.failed.length === 0;
+
+  // Derive a single human-readable failure reason:
+  //  1. If a provider attempt failed, use the first errorMessage.
+  //  2. Otherwise, if quality checks failed, use the first qualityFailed entry.
+  //  3. If a structure error exists, use that.
+  //  4. If passed, leave empty.
+  const rawAttempts: any[] = Array.isArray(meta.attempts) ? meta.attempts : [];
+  const firstProviderFailure = rawAttempts.find((a: any) => !a.success && a.errorMessage);
+  let failureReason = "";
+  if (!passed) {
+    if (firstProviderFailure?.errorMessage) {
+      failureReason = firstProviderFailure.errorMessage as string;
+    } else if (validation.qualityFailed.length > 0) {
+      failureReason = validation.qualityFailed[0];
+    } else if (validation.structureErrors.length > 0) {
+      failureReason = validation.structureErrors[0];
+    }
+  }
 
   return {
     id: testCase.id,
@@ -84,5 +103,6 @@ export async function runSingleTest(testCase: IPromptCase): Promise<ITestResult>
     providerSequence: Array.isArray(meta.providerSequence) ? meta.providerSequence : [meta.provider ?? "unknown"],
     attempts: meta.attempts || [],
     pipelineStats: meta.pipelineStats || {},
+    failureReason,
   };
 }

@@ -77,6 +77,13 @@ export interface ITestResult {
     totalRetries: number;
     totalAttempts: number;
   }>;
+  /**
+   * Human-readable primary failure reason for this test.
+   * Derived from the first failed provider attempt's errorMessage (if HTTP/provider
+   * failure) or the first entry in validation.qualityFailed (if quality failure).
+   * Empty string when the test passed.
+   */
+  failureReason?: string;
 }
 
 export interface ITestSummary {
@@ -91,6 +98,30 @@ export interface ITestSummary {
   totalFallbackCount: number;
   /** Sum of all retries across all tests */
   totalRetryCount: number;
+
+  // ── Latency percentiles (computed from per-test latencyMs samples) ────────
+  p50LatencyMs: number;
+  p95LatencyMs: number;
+  p99LatencyMs: number;
+
+  // ── Rates ─────────────────────────────────────────────────────────────────
+  /** Percentage of tests that required at least one provider fallback */
+  fallbackRate: number;
+  /** Percentage of tests that had at least one retry */
+  retryRate: number;
+
+  // ── Distribution maps ─────────────────────────────────────────────────────
+  /**
+   * Count of tests served by each provider (keyed by provider id).
+   * Only counts the provider that ultimately answered (ITestResult.provider).
+   */
+  providerDistribution: Record<string, number>;
+  /**
+   * Count of tests that failed for each failure category.
+   * Possible keys: "structure", "accessibility", "typing", "architecture",
+   * "styling", "responsiveness", "provider"
+   */
+  failureDistribution: Record<string, number>;
 }
 
 export interface ITestReport {
